@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_aquascape"
+        android:src="@drawable/backgroundlogin"
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,12 +28,12 @@
         app:layout_constraintTop_toBottomOf="@id/imgBackground"
         app:layout_constraintVertical_bias="1.0"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp">
+        android:layout_marginTop="300dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng ký"
+            android:text="Đăng ký "
             android:textColor="@color/primary_green"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -43,7 +43,6 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Email"
-            app:startIconDrawable="@drawable/ic_person" app:startIconTint="@color/primary_green"
             app:boxCornerRadiusTopStart="20dp" app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp" app:boxCornerRadiusBottomEnd="20dp">
             <com.google.android.material.textfield.TextInputEditText
@@ -55,7 +54,6 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp" android:hint="Mật khẩu"
-            app:startIconDrawable="@drawable/ic_lock" app:startIconTint="@color/primary_green"
             app:endIconMode="password_toggle"
             app:boxCornerRadiusTopStart="20dp" app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp" app:boxCornerRadiusBottomEnd="20dp">
@@ -68,7 +66,7 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp" android:hint="Xác nhận mật khẩu"
-            app:startIconDrawable="@drawable/ic_lock" app:startIconTint="@color/primary_green"
+
             app:endIconMode="password_toggle"
             app:boxCornerRadiusTopStart="20dp" app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp" app:boxCornerRadiusBottomEnd="20dp">
@@ -97,16 +95,5 @@
                 android:textStyle="bold" android:textSize="14sp"/>
         </LinearLayout>
     </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="100dp" android:layout_height="100dp"
-        app:cardCornerRadius="50dp" app:cardElevation="12dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomSheet"
-        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bottomSheet">
-        <ImageView
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:padding="20dp" android:src="@drawable/ic_leaf" />
-    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

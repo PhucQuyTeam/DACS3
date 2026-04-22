@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/backgroundLogin"
+        android:src="@drawable/backgroundlogin"
         app:layout_constraintHeight_percent="0.45"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
@@ -21,7 +21,7 @@
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="280dp"
         android:background="@drawable/bg_bottom_sheet"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgBackground"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998"
+        app:layout_constraintVertical_bias="0.997"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
@@ -52,7 +52,6 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
             app:boxStrokeColor="@color/primary_green"
-            app:startIconDrawable="@drawable/ic_launcher_foreground"
             app:startIconTint="@color/primary_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,7 +73,8 @@
             app:boxCornerRadiusTopStart="20dp"
             app:boxStrokeColor="@color/primary_green"
             app:endIconMode="password_toggle"
-            app:startIconDrawable="@drawable/ic_launcher_foreground"
+            app:startIconDrawable="
+"
             app:startIconTint="@color/primary_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -128,23 +128,5 @@
             android:textColor="@color/text_dark"
             android:textSize="14sp" />
     </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="12dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomSheet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bottomSheet">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:padding="-30dp"
-            android:src="@drawable/logoaquariumshop" /> </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout><?xml version="1.0" encoding="utf-8"?>
