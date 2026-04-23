@@ -73,9 +73,9 @@
             app:boxCornerRadiusTopStart="20dp"
             app:boxStrokeColor="@color/primary_green"
             app:endIconMode="password_toggle"
-            app:startIconDrawable="
-"
+
             app:startIconTint="@color/primary_green">
+<!--            app:startIconDrawable=""-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtPassword"
@@ -129,4 +129,4 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout><?xml version="1.0" encoding="utf-8"?>
+</androidx.constraintlayout.widget.ConstraintLayout>
