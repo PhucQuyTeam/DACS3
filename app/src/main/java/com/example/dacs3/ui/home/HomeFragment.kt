@@ -7,14 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.dacs3.R
 import com.example.dacs3.adapter.BannerAdapter
+import com.example.dacs3.adapter.ProductHomeAdapter
+import com.example.dacs3.api.ApiService
 import com.example.dacs3.databinding.FragmentHomeBinding
+import com.example.dacs3.network.RetrofitClient
+import com.example.dacs3.repository.ProductRepository
+import com.example.dacs3.viewmodel.HomeViewModel
+import com.example.dacs3.viewmodel.HomeViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.abs
 
@@ -27,6 +35,10 @@ class HomeFragment : Fragment() {
     // Biến dùng để auto-scroll
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
+
+    // MVVM Components
+    private lateinit var productAdapter: ProductHomeAdapter
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +59,10 @@ class HomeFragment : Fragment() {
             insets
         }
 
-        // Gọi hàm setup banner
+
         setupBanner()
+        setupRecyclerView()
+        setupViewModel()
     }
 
     private fun setupBanner() {
@@ -120,5 +134,34 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         // 3. DO DÙNG _binding (có dấu ? cho phép null) NÊN GÁN = NULL THOẢI MÁI
         _binding = null
+    }
+
+    private fun setupRecyclerView() {
+        productAdapter = ProductHomeAdapter()
+        binding.rvAllProducts.adapter = productAdapter
+        // LayoutManager đã được set là GridLayoutManager trong file XML của bạn rồi
+    }
+
+    private fun setupViewModel() {
+        // 1. Khởi tạo API, Repository, Factory
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val repository = ProductRepository(apiService)
+        val factory = HomeViewModelFactory(repository)
+
+            // 2. Lấy instance của ViewModel
+        homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
+        // 3. Lắng nghe dữ liệu thay đổi
+        homeViewModel.products.observe(viewLifecycleOwner) { productList ->
+            // Khi có dữ liệu từ mạng tải về, đẩy vào Adapter
+            productAdapter.submitList(productList)
+        }
+
+        homeViewModel.errorMessage.observe(viewLifecycleOwner) { errorMsg ->
+            Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
+        }
+
+        // 4. Gọi hàm fetch data từ Server
+        homeViewModel.fetchProducts()
     }
 }
