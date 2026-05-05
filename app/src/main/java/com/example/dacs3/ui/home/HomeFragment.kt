@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
 
     private fun setupViewModel() {
         // 1. Khởi tạo API, Repository, Factory
-        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val apiService = RetrofitClient.getInstance(requireContext())
         val repository = ProductRepository(apiService)
         val factory = HomeViewModelFactory(repository)
 
