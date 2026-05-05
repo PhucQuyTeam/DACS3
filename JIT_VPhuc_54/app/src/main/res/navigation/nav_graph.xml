@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/firstFragment">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.example.jit_vphuc_54.FirstFragment"
+        android:label="First" />
+
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.example.jit_vphuc_54.SecondFragment"
+        android:label="Second" />
+
+    <fragment
+        android:id="@+id/threeFragment"
+        android:name="com.example.jit_vphuc_54.ThirdFragment"
+        android:label="Three" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.jit_vphuc_54.DetailFragment"
+        android:label="Detail" />
+    <fragment
+        android:id="@+id/homeDetailFragment"
+        android:name="com.example.jit_vphuc_54.HomeDetailFragment"
+        android:label="Home Detail" />
+
+</navigation>

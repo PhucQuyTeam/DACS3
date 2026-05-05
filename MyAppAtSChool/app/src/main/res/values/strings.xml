@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MyAppAtSchool</string>
+    <string name="tieude">Hello World!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

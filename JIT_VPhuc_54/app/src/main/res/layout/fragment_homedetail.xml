@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quản lý sản phẩm"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"/>
+
+    <Button
+        android:id="@+id/btnDeleteSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xoá các sản phẩm đã chọn"/>
+    <Button
+        android:id="@+id/btnSelectAllDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xóa tất cả"/>
+</LinearLayout>
