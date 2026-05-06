@@ -22,13 +22,13 @@
                 android:orientation="vertical">
 
             <!-- 1. KHỐI THÔNG TIN CƠ BẢN (Ảnh, Giá, Tên, Danh mục) -->
-            <include layout="@layout/layout_detail_info" />
+            <include android:id="@+id/layoutInfo" layout="@layout/layout_detail_info" />
 
             <!-- 2. KHỐI MÔ TẢ SẢN PHẨM -->
-            <include layout="@layout/layout_detail_description" />
+            <include  android:id="@+id/layoutDescription" layout="@layout/layout_detail_description" />
 
             <!-- 3. KHỐI ĐÁNH GIÁ (Tổng quan & Nút Xem tất cả) -->
-            <include layout="@layout/layout_detail_reviews" />
+            <include android:id="@+id/layoutReviews" layout="@layout/layout_detail_reviews" />
 
             <!-- Khoảng trống ở đáy để khi cuộn không bị che bởi thanh mua hàng -->
             <View android:layout_width="match_parent" android:layout_height="20dp"/>

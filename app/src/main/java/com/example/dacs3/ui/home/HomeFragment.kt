@@ -137,7 +137,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productAdapter = ProductHomeAdapter()
+        productAdapter = ProductHomeAdapter{clickedProductId ->
+            val bundle = Bundle().apply {
+                putInt("productId", clickedProductId)
+
+            }
+        }
         binding.rvAllProducts.adapter = productAdapter
         // LayoutManager đã được set là GridLayoutManager trong file XML của bạn rồi
     }
