@@ -2,12 +2,23 @@ package com.example.dacs3.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.auth0.android.jwt.JWT
 import com.example.dacs3.databinding.ActivitySplashBinding
 import com.example.dacs3.ui.home.HomeActivity
-import com.example.dacs3.utils.TokenManager // Nhớ import cho đúng đường dẫn của bạn nhé
+import com.example.dacs3.Token.TokenManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.util.Date
 
 class SplashActivity : AppCompatActivity() {
 
@@ -21,25 +32,97 @@ class SplashActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
 
-        // Dùng Handler để tạo độ trễ 2 giây (2000 milliseconds) làm màu hiện logo
-        Handler(Looper.getMainLooper()).postDelayed({
-            checkAutoLogin()
-        }, 2000)
+        // Dùng Coroutines để xử lý chạy ngầm
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(1500) // Đợi 1.5 giây cho logo đẹp mắt
+            checkAndNavigate()
+        }
     }
 
-    private fun checkAutoLogin() {
-        val savedToken = tokenManager.getAccessToken()
+    private suspend fun checkAndNavigate() {
+        val accessToken = tokenManager.getAccessToken()
+        val refreshToken = tokenManager.getRefreshToken()
 
-        if (!savedToken.isNullOrEmpty()) {
-            // Có vé -> Mời khách VIP vào thẳng HomeActivity
-            startActivity(Intent(this, HomeActivity::class.java))
-        } else {
-            // Không có vé -> Mời ra cửa Đăng nhập
-            startActivity(Intent(this, LoginActivity::class.java))
+        if (accessToken.isNullOrEmpty() || refreshToken.isNullOrEmpty()) {
+            goToLogin()
+            return
         }
 
-        // Cực kỳ quan trọng: Hủy luôn màn hình Splash này đi để người dùng
-        // bấm nút Back không bị quay lại nhìn thấy cái logo quay quay nữa
-        finish()
+        // KIỂM TRA HẠN SỬ DỤNG VÉ
+        if (isTokenExpiringSoon(accessToken)) {
+            Log.d("Splash", "Vé cũ đã hết hạn! Xin vé mới ngay tại cổng...")
+            val isRefreshSuccess = refreshAccessTokenSync(refreshToken)
+            if (isRefreshSuccess) {
+                goToHome()
+            } else {
+                Log.e("Splash", "Vé chết, Thẻ VIP cũng chết -> Yêu cầu Đăng nhập lại.")
+                tokenManager.clearTokens()
+                goToLogin()
+            }
+        } else {
+            Log.d("Splash", "Vé còn sống nguyên! Xin mời vào...")
+            goToHome()
+        }
+    }
+
+    private suspend fun goToHome() {
+        withContext(Dispatchers.Main) {
+            startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+            finish()
+        }
+    }
+
+    private suspend fun goToLogin() {
+        withContext(Dispatchers.Main) {
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun isTokenExpiringSoon(token: String): Boolean {
+        try {
+            val jwt = JWT(token)
+            val expiresAt: Date? = jwt.expiresAt
+            if (expiresAt != null) {
+                // Kiểm tra xem vé còn hạn trên 1 phút không
+                val timeRemaining = expiresAt.time - System.currentTimeMillis()
+                return timeRemaining < 60000
+            }
+        } catch (e: Exception) {
+            return true
+        }
+        return true
+    }
+
+    private fun refreshAccessTokenSync(refreshToken: String): Boolean {
+        try {
+            val client = OkHttpClient()
+            val json = JSONObject().apply { put("refreshToken", refreshToken) }
+            val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+            val request = Request.Builder()
+                .url("http://10.0.2.2:8081/api/auth/refresh")
+                .post(body)
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                val responseString = response.body?.string()
+                if (responseString != null) {
+                    val jsonObject = JSONObject(responseString)
+                    if (jsonObject.optBoolean("success", false)) {
+                        val newToken = jsonObject.optString("accessToken", jsonObject.optString("token"))
+                        if (newToken.isNotEmpty()) {
+                            tokenManager.saveTokens(newToken, refreshToken)
+                            return true
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
 }

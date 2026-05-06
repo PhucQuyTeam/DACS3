@@ -14,7 +14,7 @@ import com.example.dacs3.R
 import com.example.dacs3.databinding.FragmentProfileBinding
 import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.ui.auth.LoginActivity
-import com.example.dacs3.utils.TokenManager
+import com.example.dacs3.Token.TokenManager
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -43,7 +43,12 @@ class ProfileFragment : Fragment() {
 
         // 2. GỌI API LẤY THÔNG TIN NGƯỜI DÙNG
         loadUserProfile()
+    }override fun onResume() {
+        super.onResume()
+        // Mỗi khi đóng màn hình Edit, Fragment này hiện lên lại -> Nó sẽ tự gọi lại API để kéo dữ liệu mới nhất
+        loadUserProfile()
     }
+
 
     private fun setupListeners() {
         // --- NÚT ĐĂNG XUẤT (Cứu cánh khỏi lỗi 403) ---
@@ -61,8 +66,13 @@ class ProfileFragment : Fragment() {
 
         // Nút Thay đổi thông tin
         binding.btnEditProfile.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang trang Đổi thông tin", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+            // Lấy text đang hiện trên màn hình truyền đi
+            intent.putExtra("EXTRA_NAME", binding.tvUserName.text.toString())
+            intent.putExtra("EXTRA_EMAIL", "Email của user (Lấy từ biến toàn cục hoặc ViewModel)")
+            // intent.putExtra("EXTRA_PHONE", ...)
+            // intent.putExtra("EXTRA_AVATAR", ...)
+            startActivity(intent)
         }
 
         // Nút Giỏ hàng
@@ -97,7 +107,7 @@ class ProfileFragment : Fragment() {
                     if (!userProfile.avatar.isNullOrEmpty()) {
                         // Nối URL gốc của backend với tên file ảnh trong DB
                         // VD: http://10.0.2.2:8081/uploads/1764724253_betta_hm_12.jpg
-                        val imageUrl = "http://10.0.2.2:8081/uploads/${userProfile.avatar}"
+                        val imageUrl = "http://10.0.2.2:8081/upload/${userProfile.avatar}"
 
                         Glide.with(requireContext())
                             .load(imageUrl)

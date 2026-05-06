@@ -5,10 +5,15 @@ import com.example.dacs3.model.LoginRequest
 import com.example.dacs3.model.ProductHomeDTO
 import com.example.dacs3.model.RegisterRequest
 import com.example.dacs3.model.UserProfileDTO
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 
 interface ApiService {
     @POST("auth/login")
@@ -21,4 +26,11 @@ interface ApiService {
     suspend fun getHomeProducts(): Response<List<ProductHomeDTO>>
     @GET("user/profile") // Thay đổi đường dẫn này theo đúng backend của bạn
     suspend fun getUserProfile(): Response<UserProfileDTO>
+    @Multipart
+    @PUT("user/update-profile")
+    suspend fun updateProfile(
+        @Part("name") name: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): Response<AuthResponse>
 }

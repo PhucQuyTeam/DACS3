@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.dacs3.databinding.ActivityRegisterBinding
 import com.example.dacs3.model.RegisterRequest
 import com.example.dacs3.network.RetrofitClient
-import com.example.dacs3.utils.TokenManager
+import com.example.dacs3.Token.TokenManager
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
