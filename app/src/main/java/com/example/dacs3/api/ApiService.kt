@@ -43,5 +43,6 @@ interface ApiService {
         @Part("phone") phone: RequestBody,
         @Part file: MultipartBody.Part?
     ): Response<AuthResponse>
+    ...
 
 }
