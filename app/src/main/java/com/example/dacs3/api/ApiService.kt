@@ -7,10 +7,15 @@ import com.example.dacs3.model.RegisterRequest
 import com.example.dacs3.model.ReviewDTO
 import com.example.dacs3.model.UserProfileDTO
 import com.example.dacs3.model.productDetailDTO
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -30,5 +35,13 @@ interface ApiService {
     suspend fun getProductDetail(@Path("id") productId: Int): Response<productDetailDTO>
     @GET("home/products/{id}/reviews")
     suspend fun getProductReviews(@Path("id") productId: Int): Response<List<ReviewDTO>>
+
+    @Multipart
+    @PUT("user/update-profile")
+    suspend fun updateProfile(
+        @Part("name") name: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): Response<AuthResponse>
 
 }
