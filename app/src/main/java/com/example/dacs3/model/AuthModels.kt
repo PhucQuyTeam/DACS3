@@ -1,7 +1,5 @@
 package com.example.dacs3.model
 
-import com.google.gson.annotations.SerializedName
-
 // Request gửi đi
 data class LoginRequest(
     val email: String,
@@ -30,4 +28,13 @@ data class AuthResponse(
     val user: UserDTO?,
     val token: String?,         // Access Token
     val refreshToken: String?   // Refresh Token
+)
+data class UpdateProfileRequest(
+    val name: String,
+    val numberPhone: String
+)
+
+data class BaseResponse(
+    val success: Boolean,
+    val message: String
 )
