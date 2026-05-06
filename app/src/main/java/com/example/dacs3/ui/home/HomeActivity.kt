@@ -1,6 +1,7 @@
 package com.example.dacs3.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -59,6 +60,18 @@ class HomeActivity : AppCompatActivity() {
                 2 -> navController.navigate(R.id.nav_blog)
                 3 -> navController.navigate(R.id.nav_notifications)
                 4 -> navController.navigate(R.id.nav_profile)
+            }
+        }
+
+        // THÊM ĐOẠN NÀY ĐỂ TỐI ƯU ẨN/HIỆN BOTTOM NAV
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Kiểm tra: Nếu đích đến là trang Chi tiết sản phẩm (hoặc các trang con khác) -> Ẩn Nav đi
+            // Lưu ý: R.id.productDetailFragment là ID của fragment chi tiết khai báo trong file nav_thuysinh.xml
+            if (destination.id == R.id.productDetailFragment) {
+                binding.bottomNavigation.visibility = View.GONE
+            } else {
+                // Nếu ở màn Home, Profile, Blog... -> Hiện Nav lên
+                binding.bottomNavigation.visibility = View.VISIBLE
             }
         }
 

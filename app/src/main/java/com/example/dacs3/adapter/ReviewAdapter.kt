@@ -23,7 +23,7 @@ class ReviewAdapter: RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
             binding.tvReviewerName.text = review.reviewerName
             binding.ratingBar.rating = review.rating.toFloat()
             binding.tvReviewComment.text = review.comment
-            binding.tvReviewDate.text = review.createdAt.toString()
+            binding.tvReviewDate.text = review.createdAt.toString().substringBefore("T")
 
             if(!review.image.isNullOrEmpty()){
                 binding.ivReviewImage.visibility = View.VISIBLE

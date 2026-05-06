@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -142,6 +143,7 @@ class HomeFragment : Fragment() {
                 putInt("productId", clickedProductId)
 
             }
+            findNavController().navigate(R.id.action_nav_home_to_productDetailFragment, bundle)
         }
         binding.rvAllProducts.adapter = productAdapter
         // LayoutManager đã được set là GridLayoutManager trong file XML của bạn rồi
