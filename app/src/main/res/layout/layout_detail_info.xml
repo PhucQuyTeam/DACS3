@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingBottom="16dp">
+
+    <!-- 1. Vuốt nhiều hình ảnh sản phẩm (Dùng ViewPager2 thay thế ImageView) -->
+    <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerProductImages"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_round_ripple"
+            android:padding="10dp"
+            android:src="@drawable/ic_back"
+            android:scaleType="centerInside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+            android:id="@+id/btnCart"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_round_ripple"
+            android:padding="10dp"
+            app:tint="@android:color/black"
+            android:src="@drawable/ic_giohang"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- 2. Giá và Lượt đã bán (Chú ý: Đã đổi layout_constraintTop_toBottomOf thành viewPagerProductImages) -->
+    <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="150.000 đ"
+            android:textColor="#FF5722"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerProductImages"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+            android:id="@+id/tvSold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đã bán 1,2k"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvPrice"
+            app:layout_constraintTop_toTopOf="@id/tvPrice"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 3. Tên sản phẩm -->
+    <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tên sản phẩm bể cá thủy sinh đẹp lung linh"
+            android:textColor="#212121"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tvPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 4. Danh mục & Tình trạng -->
+    <com.google.android.material.chip.Chip
+            android:id="@+id/chipCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cá cảnh"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            app:chipBackgroundColor="#E8F5E9"
+            app:chipStrokeWidth="0dp"
+            android:textColor="#2E7D32"
+            app:layout_constraintTop_toBottomOf="@id/tvProductName"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tình trạng: Còn hàng (20)"
+            android:textColor="#1976D2"
+            android:textSize="14sp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/chipCategory"
+            app:layout_constraintTop_toTopOf="@id/chipCategory"
+            app:layout_constraintStart_toEndOf="@id/chipCategory"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

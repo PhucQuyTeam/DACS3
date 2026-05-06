@@ -36,6 +36,8 @@ class ProductHomeAdapter : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHo
                 .placeholder(R.drawable.logoaquariumshop) // Ảnh hiển thị khi đang load
                 .error(R.drawable.logoaquariumshop)       // Ảnh hiển thị khi lỗi
                 .into(binding.ivProductImage)
+
+            binding.root.tag = product.productId;
         }
     }
 
