@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -22,6 +23,8 @@ import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.repository.ProductDetailRepository
 import com.example.dacs3.viewmodel.ProductDetailViewModel
 import com.example.dacs3.viewmodel.ProductDetailViewModelFactory
+import java.text.NumberFormat
+import java.util.Locale
 import kotlin.math.abs
 
 class ProductDetailFragment : Fragment() {
@@ -58,6 +61,7 @@ class ProductDetailFragment : Fragment() {
             setupViewModel()
             setupRecyclerView()
             setupObservers()
+            setupTopBar()
             setupBottomActionBar()
 
             viewmodel.fetchProductData(productId)
@@ -99,13 +103,24 @@ class ProductDetailFragment : Fragment() {
                     setupImageSlider(it.imgages) // imgages (sai chính tả do API cũ của bạn)
                 }
 
-                // Cập nhật thông tin cơ bản (Giả sử bạn có các id tương ứng trong layoutInfo)
-                // val format = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
-                // binding.layoutInfo.tvProductName.text = it.name
-                // binding.layoutInfo.tvProductPrice.text = format.format(it.price)
+                val format = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+                binding.layoutInfo.tvPrice.text = format.format(it.price)
 
-                // Cập nhật Mô tả (Giả sử id là tvDescription trong layoutDescription)
-                // binding.layoutDescription.tvDescription.text = it.description
+                binding.layoutInfo.tvSold.text = "Đã bán ${it.total_ProductQuantity}"
+                binding.layoutInfo.tvProductName.text = it.name
+                binding.layoutInfo.chipCategory.text = it.categorieName
+
+                // Xử lý hiển thị Tình trạng kho hàng
+                if (it.quantity > 0) {
+                    binding.layoutInfo.tvStatus.text = "Tình trạng: Còn hàng (${it.quantity})"
+                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#1976D2")) // Xanh dương
+                } else {
+                    binding.layoutInfo.tvStatus.text = "Tình trạng: Hết hàng"
+                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#D32F2F")) // Đỏ
+                }
+
+                // 3. Cập nhật Mô tả (layout_detail_description)
+                binding.layoutDescription.tvDescription.text = it.description
 
                 // Cập nhật Header thống kê Đánh giá
                 binding.layoutReviews.tvAvgRating.text = "⭐ ${it.averageRating}/5"
@@ -133,6 +148,22 @@ class ProductDetailFragment : Fragment() {
 
     }
 
+    private fun setupTopBar() {
+        // 1. Xử lý nút Back (Quay lại trang chủ)
+        binding.layoutInfo.btnBack.setOnClickListener {
+            // Lệnh này giúp Fragment tự động lùi lại 1 trang giống như khi ấn nút Back trên điện thoại
+            findNavController().popBackStack()
+        }
+
+        // 2. Xử lý nút Giỏ hàng
+        binding.layoutInfo.btnCart.setOnClickListener {
+            Toast.makeText(requireContext(), "Chuyển sang màn hình Giỏ hàng", Toast.LENGTH_SHORT).show()
+
+            // TODO: Mở Fragment Giỏ Hàng tại đây
+            // Ví dụ: findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
+        }
+    }
+
     private fun setupBottomActionBar(){
         binding.btnDecreaseQty.setOnClickListener {
             if(currentQuantity > 1){
@@ -151,13 +182,14 @@ class ProductDetailFragment : Fragment() {
                 Toast.makeText(requireContext(), "Trong kho chỉ còn $maxStock sản phẩm", Toast.LENGTH_SHORT).show()
             }
 
-            binding.btnAddToCart.setOnClickListener {
-                Toast.makeText(requireContext(), "Đã thêm $currentQuantity sản phẩm vào giỏ", Toast.LENGTH_SHORT).show()
-            }
+        }
 
-            binding.btnBuyNow.setOnClickListener {
-                Toast.makeText(requireContext(), "Chuyển sang màn hình Thanh toán", Toast.LENGTH_SHORT).show()
-            }
+        binding.btnAddToCart.setOnClickListener {
+            Toast.makeText(requireContext(), "Đã thêm $currentQuantity sản phẩm vào giỏ", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnBuyNow.setOnClickListener {
+            Toast.makeText(requireContext(), "Chuyển sang màn hình Thanh toán", Toast.LENGTH_SHORT).show()
         }
 
 
