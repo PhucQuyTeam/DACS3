@@ -1,60 +1,229 @@
 package com.example.dacs3.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.dacs3.R
+import com.example.dacs3.adapter.ProductImageSliderAdapter
+import com.example.dacs3.adapter.ReviewAdapter
+import com.example.dacs3.databinding.FragmentProductDetailBinding
+import com.example.dacs3.network.RetrofitClient
+import com.example.dacs3.repository.ProductDetailRepository
+import com.example.dacs3.viewmodel.ProductDetailViewModel
+import com.example.dacs3.viewmodel.ProductDetailViewModelFactory
+import kotlin.math.abs
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProductDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProductDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentProductDetailBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var viewmodel: ProductDetailViewModel
+    private lateinit var reviewAdapter: ReviewAdapter
+
+    // Biến lưu trữ dữ liệu
+    private var productId: Int = -1
+    private var maxStock: Int = 1
+    private var currentQuantity: Int = 1
+
+    // Biến cho auto-scroll Slider ảnh
+    private val sliderHandler = Handler(Looper.getMainLooper())
+    private lateinit var sliderRunnable: Runnable
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_detail, container, false)
+        _binding = FragmentProductDetailBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProductDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        productId = arguments?.getInt("productId") ?: -1
+
+        if(productId != -1){
+            setupViewModel()
+            setupRecyclerView()
+            setupObservers()
+            setupBottomActionBar()
+
+            viewmodel.fetchProductData(productId)
+        }else{
+            Toast.makeText(requireContext(), "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show()
+
+        }
     }
+
+    private fun setupViewModel(){
+        val apiService = RetrofitClient.getInstance(requireContext())
+        val repository = ProductDetailRepository(apiService)
+        val factory = ProductDetailViewModelFactory(repository)
+        viewmodel = ViewModelProvider(this, factory).get(ProductDetailViewModel::class.java)
+    }
+
+    private fun setupRecyclerView(){
+        reviewAdapter = ReviewAdapter()
+
+        binding.layoutReviews.rvPreviewReviews.apply{
+            adapter = reviewAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            isNestedScrollingEnabled = false
+        }
+
+        binding.layoutReviews.btnViewAllReviews.setOnClickListener {
+            Toast.makeText(requireContext(), "Chuyển sang màn hình Tất cả Đánh giá", Toast.LENGTH_SHORT).show()
+            // Thực hiện chuyển Fragment tại đây và truyền productId đi
+        }
+    }
+
+    private fun setupObservers(){
+        viewmodel.productDetail.observe(viewLifecycleOwner) { product ->
+            product?.let {
+                maxStock = it.quantity // Cập nhật giới hạn tồn kho
+
+                // 1. Gắn Slider Hình Ảnh Sản Phẩm
+                if (!it.imgages.isNullOrEmpty()) {
+                    setupImageSlider(it.imgages) // imgages (sai chính tả do API cũ của bạn)
+                }
+
+                // Cập nhật thông tin cơ bản (Giả sử bạn có các id tương ứng trong layoutInfo)
+                // val format = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+                // binding.layoutInfo.tvProductName.text = it.name
+                // binding.layoutInfo.tvProductPrice.text = format.format(it.price)
+
+                // Cập nhật Mô tả (Giả sử id là tvDescription trong layoutDescription)
+                // binding.layoutDescription.tvDescription.text = it.description
+
+                // Cập nhật Header thống kê Đánh giá
+                binding.layoutReviews.tvAvgRating.text = "⭐ ${it.averageRating}/5"
+                binding.layoutReviews.tvTotalReviews.text = "(${it.totalReviews} đánh giá)"
+            }
+        }
+
+        viewmodel.review.observe(viewLifecycleOwner) { reviews ->
+            reviews?.let{
+                val previewList = it.filterNotNull().take(3)
+                reviewAdapter.submitList(previewList)
+
+                if(it.isEmpty()){
+                    binding.layoutReviews.btnViewAllReviews.visibility = View.GONE
+                }else{
+                    binding.layoutReviews.btnViewAllReviews.visibility = View.VISIBLE
+                }
+
+            }
+        }
+
+        viewmodel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun setupBottomActionBar(){
+        binding.btnDecreaseQty.setOnClickListener {
+            if(currentQuantity > 1){
+                currentQuantity--
+                binding.tvCurrentQuantity.text = currentQuantity.toString()
+
+            }
+
+        }
+
+        binding.btnIncreaseQty.setOnClickListener {
+            if(currentQuantity < maxStock){
+                currentQuantity++
+                binding.tvCurrentQuantity.text = currentQuantity.toString()
+            }else {
+                Toast.makeText(requireContext(), "Trong kho chỉ còn $maxStock sản phẩm", Toast.LENGTH_SHORT).show()
+            }
+
+            binding.btnAddToCart.setOnClickListener {
+                Toast.makeText(requireContext(), "Đã thêm $currentQuantity sản phẩm vào giỏ", Toast.LENGTH_SHORT).show()
+            }
+
+            binding.btnBuyNow.setOnClickListener {
+                Toast.makeText(requireContext(), "Chuyển sang màn hình Thanh toán", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    }
+
+    private fun setupImageSlider(imageUrls: List<String>) {
+        // Giả sử ViewPager2 của bạn nằm trong layoutInfo có id là viewPagerProductImages
+        val viewPager = binding.layoutInfo.viewPagerProductImages
+        val adapter = ProductImageSliderAdapter(imageUrls)
+        viewPager.adapter = adapter
+
+        // Hiệu ứng giống Home
+        viewPager.clipToPadding = false
+        viewPager.clipChildren = false
+        viewPager.offscreenPageLimit = 3
+        viewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+        }
+        viewPager.setPageTransformer(compositePageTransformer)
+
+        // Auto-scroll
+        sliderRunnable = Runnable {
+            val currentItem = viewPager.currentItem
+            val totalItems = adapter.itemCount
+            if (currentItem == totalItems - 1) viewPager.currentItem = 0
+            else viewPager.currentItem = currentItem + 1
+        }
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                sliderHandler.removeCallbacks(sliderRunnable)
+                sliderHandler.postDelayed(sliderRunnable, 3000) // Đổi ảnh sau 3s
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Khi mở Detail -> Ẩn Nav
+        // Thay "R.id.bottomNavigationView" bằng ID thật trong MainActivity của bạn
+        requireActivity().findViewById<View>(R.id.bottomNavigation)?.visibility = View.GONE
+
+        // Tiếp tục chạy slider ảnh nếu có
+        if (::sliderRunnable.isInitialized) sliderHandler.postDelayed(sliderRunnable, 3000)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Khi rời khỏi Detail (Back lại Home) -> Hiện Nav
+        requireActivity().findViewById<View>(R.id.bottomNavigation)?.visibility = View.VISIBLE
+
+        // Dừng slider ảnh
+        if (::sliderRunnable.isInitialized) sliderHandler.removeCallbacks(sliderRunnable)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Dọn dẹp ViewBinding để chống tràn bộ nhớ
+        sliderHandler.removeCallbacks(sliderRunnable)
+    }
+
+
 }
