@@ -10,7 +10,7 @@ import com.example.dacs3.model.ProductHomeDTO
 import java.text.NumberFormat
 import java.util.Locale
 
-class ProductHomeAdapter : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
+class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productList = listOf<ProductHomeDTO>()
 
     fun submitList(list: List<ProductHomeDTO>) {
@@ -37,7 +37,9 @@ class ProductHomeAdapter : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHo
                 .error(R.drawable.logoaquariumshop)       // Ảnh hiển thị khi lỗi
                 .into(binding.ivProductImage)
 
-            binding.root.tag = product.productId;
+            binding.root.setOnClickListener {
+                onItemClick(product.productId)
+            }
         }
     }
 
