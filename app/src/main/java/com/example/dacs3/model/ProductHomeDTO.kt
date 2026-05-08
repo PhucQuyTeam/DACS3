@@ -9,5 +9,6 @@ data class ProductHomeDTO(
     @SerializedName("total_ProductQuantity") val totalProductQuantity: Int,
     @SerializedName("description") val description: String?,
     @SerializedName("price") val price: Int,
-    @SerializedName("quantity") val quantity: Int
+    @SerializedName("quantity") val quantity: Int,
+    @SerializedName("categorieId") val categoryId: Int
 )

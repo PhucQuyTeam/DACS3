@@ -16,12 +16,17 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
+    private var originnalProductList = listOf<ProductHomeDTO>()
+
+
     fun fetchProducts() {
         viewModelScope.launch {
             try {
                 val response = repository.getProducts()
                 if (response.isSuccessful) {
-                    _products.postValue(response.body())
+                    val list = response.body() ?: emptyList()
+                    originnalProductList = list
+                    _products.postValue(list)
                 } else {
                     _errorMessage.postValue("Lỗi máy chủ: ${response.code()}")
                 }
@@ -30,4 +35,6 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
             }
         }
     }
+
+
 }
