@@ -27,8 +27,8 @@
         <activity android:name=".ui.home.HomeActivity" /><activity
             android:name=".ui.profile.EditProfileActivity"
             android:exported="false" />
-
-
+        <activity android:name=".ui.order.OrderHistoryActivity" />
+        <activity android:name=".ui.order.OrderDetailActivity" />
     </application>
 
 </manifest>

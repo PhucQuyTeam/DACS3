@@ -15,6 +15,9 @@ import com.example.dacs3.databinding.FragmentProfileBinding
 import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.ui.auth.LoginActivity
 import com.example.dacs3.Token.TokenManager
+import com.example.dacs3.model.UserDTO
+import com.example.dacs3.model.UserProfileDTO
+import com.example.dacs3.ui.order.OrderHistoryActivity
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -23,6 +26,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var tokenManager: TokenManager
+    private var currentUser: UserProfileDTO? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,23 +71,53 @@ class ProfileFragment : Fragment() {
         // Nút Thay đổi thông tin
         binding.btnEditProfile.setOnClickListener {
             val intent = Intent(requireContext(), EditProfileActivity::class.java)
-            // Lấy text đang hiện trên màn hình truyền đi
-            intent.putExtra("EXTRA_NAME", binding.tvUserName.text.toString())
-            intent.putExtra("EXTRA_EMAIL", "Email của user (Lấy từ biến toàn cục hoặc ViewModel)")
-            // intent.putExtra("EXTRA_PHONE", ...)
-            // intent.putExtra("EXTRA_AVATAR", ...)
+
+            intent.putExtra("EXTRA_NAME", currentUser?.name ?: "")
+            intent.putExtra("EXTRA_EMAIL", currentUser?.email ?: "")
+            intent.putExtra("EXTRA_PHONE", currentUser?.numberPhone ?: "")
+            intent.putExtra("EXTRA_AVATAR", currentUser?.avatar ?: "")
+
+            startActivity(intent)
+        }
+        // Nút Giỏ hàng
+        binding.btnCart.setOnClickListener {
+
+        }
+        binding.btnPending.setOnClickListener { // Nhớ đặt id btnPendingOrders trong XML
+            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
+            intent.putExtra("TARGET_TAB", 0) // Tab 0
             startActivity(intent)
         }
 
-        // Nút Giỏ hàng
-        binding.btnCart.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang Giỏ hàng", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(requireContext(), CartActivity::class.java))
+        // 3. Nút Icon "Đang giao"
+        binding.btnShipping.setOnClickListener { // Nhớ đặt id btnShippingOrders trong XML
+            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
+            intent.putExtra("TARGET_TAB", 1) // Tab 1
+            startActivity(intent)
+        }
+
+        // 4. Nút Icon "Hoàn thành"
+        binding.btnCompleted.setOnClickListener { // Nhớ đặt id btnCompletedOrders trong XML
+            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
+            intent.putExtra("TARGET_TAB", 2) // Tab 2
+            startActivity(intent)
         }
 
         // Nút Lịch sử đơn hàng
         binding.btnOrderHistory.setOnClickListener {
-            Toast.makeText(requireContext(), "Xem tất cả lịch sử", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
+            intent.putExtra("TARGET_TAB", 0) // Tab 0
+            startActivity(intent)
+        }
+        binding.btnProfileInfo.setOnClickListener {
+            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+
+            intent.putExtra("EXTRA_NAME", currentUser?.name ?: "")
+            intent.putExtra("EXTRA_EMAIL", currentUser?.email ?: "")
+            intent.putExtra("EXTRA_PHONE", currentUser?.numberPhone ?: "")
+            intent.putExtra("EXTRA_AVATAR", currentUser?.avatar ?: "")
+
+            startActivity(intent)
         }
     }
 
@@ -100,8 +134,10 @@ class ProfileFragment : Fragment() {
                 if (response.isSuccessful && response.body() != null) {
                     val userProfile = response.body()!!
 
+                    currentUser = userProfile
+
                     // 1. Đổ dữ liệu Tên
-                    binding.tvUserName.text = userProfile.name
+                    binding.tvUserName.text = userProfile.name ?: "Chưa cập nhật tên"
 
                     // 2. Xử lý Avatar bo tròn bằng thư viện Glide
                     if (!userProfile.avatar.isNullOrEmpty()) {
