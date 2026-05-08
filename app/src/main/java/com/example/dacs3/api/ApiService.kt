@@ -2,6 +2,8 @@ package com.example.dacs3.api
 
 import com.example.dacs3.model.AuthResponse
 import com.example.dacs3.model.LoginRequest
+import com.example.dacs3.model.OrderDTO
+import com.example.dacs3.model.OrderItemDTO
 import com.example.dacs3.model.ProductHomeDTO
 import com.example.dacs3.model.RegisterRequest
 import com.example.dacs3.model.ReviewDTO
@@ -17,6 +19,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("auth/login")
@@ -44,4 +47,13 @@ interface ApiService {
         @Part file: MultipartBody.Part?
     ): Response<AuthResponse>
 
+    @GET("/my-orders") // Hoặc /api/my-orders tùy cấu hình Spring Boot của bạn
+    suspend fun getMyOrders(
+        @Query("status") status: Int
+    ): Response<List<OrderDTO>>
+    @GET("/order-items")
+    suspend fun getOrderItems(
+        @Query("orderId") orderId: Int
+    ): Response<List<OrderItemDTO>>
+    ....
 }
