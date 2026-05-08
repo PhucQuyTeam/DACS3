@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.repository.ProductDetailRepository
 import com.example.dacs3.viewmodel.ProductDetailViewModel
 import com.example.dacs3.viewmodel.ProductDetailViewModelFactory
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 import kotlin.math.abs
@@ -159,10 +161,8 @@ class ProductDetailFragment : Fragment() {
 
         // 2. Xử lý nút Giỏ hàng
         binding.layoutInfo.btnCart.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang màn hình Giỏ hàng", Toast.LENGTH_SHORT).show()
-
-            // TODO: Mở Fragment Giỏ Hàng tại đây
-            // Ví dụ: findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
+            val intent = android.content.Intent(requireContext(), com.example.dacs3.ui.cart.CartActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -187,11 +187,52 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã thêm $currentQuantity sản phẩm vào giỏ", Toast.LENGTH_SHORT).show()
+            // Xóa dòng val productId = currentProductId đi
+            // Dùng trực tiếp biến quantity hiện tại
+            val quantity = currentQuantity
+
+            // Hiển thị một Loading nhỏ (nếu cần)
+            binding.btnAddToCart.isEnabled = false
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    // Truyền thẳng biến productId (khai báo ở đầu class) vào API
+                    val response = RetrofitClient.getInstance(requireContext()).addToCart(productId, quantity)
+                    if (response.isSuccessful) {
+                        Toast.makeText(requireContext(), "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Lỗi khi thêm vào giỏ!", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show()
+                } finally {
+                    binding.btnAddToCart.isEnabled = true
+                }
+            }
         }
 
         binding.btnBuyNow.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang màn hình Thanh toán", Toast.LENGTH_SHORT).show()
+            val quantity = currentQuantity
+            binding.btnBuyNow.isEnabled = false // Khóa nút tạm thời tránh spam click
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    // 1. Gọi API thêm vào giỏ hàng
+                    val response = RetrofitClient.getInstance(requireContext()).addToCart(productId, quantity)
+
+                    if (response.isSuccessful) {
+                        // 2. Thêm thành công -> Chuyển thẳng sang trang Giỏ hàng luôn
+                        val intent = android.content.Intent(requireContext(), com.example.dacs3.ui.cart.CartActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(requireContext(), "Lỗi khi thêm vào giỏ!", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show()
+                } finally {
+                    binding.btnBuyNow.isEnabled = true
+                }
+            }
         }
 
 

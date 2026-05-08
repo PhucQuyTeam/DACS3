@@ -81,7 +81,8 @@ class ProfileFragment : Fragment() {
         }
         // Nút Giỏ hàng
         binding.btnCart.setOnClickListener {
-
+            val intent = android.content.Intent(requireContext(), com.example.dacs3.ui.cart.CartActivity::class.java)
+            startActivity(intent)
         }
         binding.btnPending.setOnClickListener { // Nhớ đặt id btnPendingOrders trong XML
             val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
@@ -158,20 +159,31 @@ class ProfileFragment : Fragment() {
                             .circleCrop()
                             .into(binding.imgAvatar)
                     }
+                    val pending = userProfile.pendingCount ?: 0
+                    if (pending > 0) {
+                        binding.tvPendingCount.text = pending.toString()
+                        binding.tvPendingCount.visibility = View.VISIBLE
+                    } else {
+                        binding.tvPendingCount.visibility = View.GONE
+                    }
 
-                    // 3. Đổ dữ liệu số lượng Đơn hàng (Nếu có)
-                    // Hiện con số lên (Bỏ comment nếu XML bạn đã set visibility="visible")
-                    /*
-                    binding.tvPendingCount.text = userProfile.pendingCount.toString()
-                    binding.tvPendingCount.visibility = View.VISIBLE
+                    // Đang giao
+                    val shipping = userProfile.shippingCount ?: 0
+                    if (shipping > 0) {
+                        binding.tvShippingCount.text = shipping.toString()
+                        binding.tvShippingCount.visibility = View.VISIBLE
+                    } else {
+                        binding.tvShippingCount.visibility = View.GONE
+                    }
 
-                    binding.tvShippingCount.text = userProfile.shippingCount.toString()
-                    binding.tvShippingCount.visibility = View.VISIBLE
-
-                    binding.tvCompletedCount.text = userProfile.completedCount.toString()
-                    binding.tvCompletedCount.visibility = View.VISIBLE
-                    */
-
+                    // Hoàn thành
+                    val completed = userProfile.completedCount ?: 0
+                    if (completed > 0) {
+                        binding.tvCompletedCount.text = completed.toString()
+                        binding.tvCompletedCount.visibility = View.VISIBLE
+                    } else {
+                        binding.tvCompletedCount.visibility = View.GONE
+                    }
                 } else {
                     // Nếu dính 403 (Hết hạn Token), hệ thống sẽ nhảy vào đây
                     Log.e("Profile", "Lỗi API: ${response.code()}")
