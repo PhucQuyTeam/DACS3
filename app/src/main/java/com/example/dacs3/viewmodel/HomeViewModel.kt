@@ -36,5 +36,12 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
         }
     }
 
-
+    fun filterByCategory(categoryId :Int){
+        if(categoryId == -1){
+            _products.value = originnalProductList
+        }else{
+            val filteredList = originnalProductList.filter { it.categoryId == categoryId }
+            _products.value = filteredList
+        }
+    }
 }

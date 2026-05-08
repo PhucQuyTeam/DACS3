@@ -64,6 +64,7 @@ class HomeFragment : Fragment() {
         setupBanner()
         setupRecyclerView()
         setupViewModel()
+        setupFilter()
     }
 
     private fun setupBanner() {
@@ -170,5 +171,22 @@ class HomeFragment : Fragment() {
 
         // 4. Gọi hàm fetch data từ Server
         homeViewModel.fetchProducts()
+    }
+
+    fun setupFilter(){
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedId ->
+            if(checkedId.isEmpty() ){
+                homeViewModel.filterByCategory(-1)
+                return@setOnCheckedStateChangeListener
+            }
+
+            val selectedChipId = checkedId.first()
+
+            when(selectedChipId){
+
+            }
+
+        }
+
     }
 }
