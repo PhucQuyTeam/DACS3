@@ -52,7 +52,7 @@
                 android:layout_marginTop="8dp"
                 android:text="100.000 đ"
                 android:textColor="#FF5722"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvProductName" />
@@ -61,13 +61,48 @@
                 android:id="@+id/tvProductSold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="16dp"
                 android:text="Đã bán: 10"
                 android:textColor="#757575"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/tvProductPrice"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvProductPrice" />
+                app:layout_constraintTop_toTopOf="@id/tvProductPrice"
+                app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+                android:id="@+id/tvShipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:background="#E8F5E9"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                android:text=" COD"
+                android:textColor="#00BFA5"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/ic_truck"
+                android:drawablePadding="4dp"
+                app:drawableTint="#00BFA5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvProductPrice" />
+
+        <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="4.9 ⭐"
+                android:textColor="#757575"
+                android:textSize="15sp"
+                android:drawablePadding="2dp"
+                app:drawableTint="#FFC107"
+                app:layout_constraintBottom_toBottomOf="@id/tvShipping"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvShipping"
+                app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -9,6 +9,7 @@ import com.example.dacs3.R
 
 class ProductImageSliderAdapter(private val imageUrls: List<String>) : RecyclerView.Adapter<ProductImageSliderAdapter.SliderViewHolder>() {
 
+    private val BASE_IMAGE_URL = "http://10.0.2.2:8081/upload/"
     inner class SliderViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
@@ -23,8 +24,13 @@ class ProductImageSliderAdapter(private val imageUrls: List<String>) : RecyclerV
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
+        var imageName = imageUrls[position]
+        if (imageName.startsWith("upload/")) {
+            imageName = imageName.replaceFirst("upload/", "")
+        }
+        val fullImageUrl = BASE_IMAGE_URL + imageName
         Glide.with(holder.imageView.context)
-            .load(imageUrls[position])
+            .load(fullImageUrl)
             .placeholder(R.drawable.logoaquariumshop)
             .into(holder.imageView)
     }

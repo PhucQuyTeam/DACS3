@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="12dp">
-
-    <!-- Người đánh giá & Số sao -->
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="#F8F9FA"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#EAEAEA"
+        app:strokeWidth="1dp">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Người đánh giá & ngày -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nguyễn Văn A"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textColor="#212121"
                     android:textStyle="bold"/>
 
@@ -35,43 +37,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/05/2026"
-                    android:layout_marginRight="10dp"
                     android:textSize="12sp"
                     android:textColor="#9E9E9E"/>
         </LinearLayout>
 
-        <!-- Dùng RatingBar mini của Android -->
         <RatingBar
                 android:id="@+id/ratingBar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:numStars="5"
                 android:rating="5"
-                android:progressTint="#FFC107"/> <!-- Màu vàng -->
+                android:progressTint="#FFC107"/>
+
+        <TextView
+                android:id="@+id/tvReviewComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Cây thủy sinh rất tươi, đóng gói cẩn thận. Shop tư vấn nhiệt tình, sẽ ủng hộ tiếp!"
+                android:textColor="#424242"
+                android:lineSpacingExtra="3dp"
+                android:textSize="14sp"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivReviewImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="12dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logoaquariumshop"
+                app:cornerSize="8dp"/>
     </LinearLayout>
-
-    <!-- Nội dung đánh giá -->
-    <TextView
-            android:id="@+id/tvReviewComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Cây thủy sinh rất tươi, đóng gói cẩn thận. Shop tư vấn nhiệt tình, sẽ ủng hộ tiếp!"
-            android:textColor="#424242"
-            android:textSize="14sp"/>
-
-    <!-- Hình ảnh đính kèm của người dùng (nếu có) -->
-    <!-- Dùng ShapeableImageView để bo góc ảnh -->
-    <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivReviewImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logoaquariumshop"
-            />
-<!--    app:shapeAppearanceOverlay="@style/RoundedImageView"-->
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

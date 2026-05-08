@@ -18,6 +18,11 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
 
     private var originnalProductList = listOf<ProductHomeDTO>()
 
+    var currentSearchQuery: String = ""
+    var minRating: Double = 0.0
+    var maxRating: Double = 5.0
+    var minPrice: Int = 0
+    var maxPrice: Int = Int.MAX_VALUE
 
     fun fetchProducts() {
         viewModelScope.launch {
@@ -26,7 +31,8 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
                 if (response.isSuccessful) {
                     val list = response.body() ?: emptyList()
                     originnalProductList = list
-                    _products.postValue(list)
+//                    _products.postValue(list)
+                    searchProducts(currentSearchQuery)
                 } else {
                     _errorMessage.postValue("Lỗi máy chủ: ${response.code()}")
                 }
@@ -43,5 +49,45 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
             val filteredList = originnalProductList.filter { it.categoryId == categoryId }
             _products.value = filteredList
         }
+    }
+
+    fun searchProducts(query: String) {
+        currentSearchQuery = query // Nhớ lại từ khóa người dùng gõ
+
+        if (query.isBlank()) {
+            _products.value = originnalProductList
+        } else {
+            val filteredList = originnalProductList.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+            _products.value = filteredList
+        }
+        executeFiltering()
+    }
+
+    fun applyAdvancedFilters(minR: Double, maxR: Double, minP: Int, maxP: Int) {
+        this.minRating = minR
+        this.maxRating = maxR
+        this.minPrice = minP
+        this.maxPrice = maxP
+        executeFiltering()
+    }
+
+    private fun executeFiltering() {
+        var filteredList = originnalProductList
+
+        // 1. Lọc theo chữ (Tên)
+        if (currentSearchQuery.isNotBlank()) {
+            filteredList = filteredList.filter { it.name.contains(currentSearchQuery, ignoreCase = true) }
+        }
+
+        // 2. Lọc theo Sao
+        filteredList = filteredList.filter { it.averageRating in minRating..maxRating }
+
+        // 3. Lọc theo Giá
+        filteredList = filteredList.filter { it.price in minPrice..maxPrice }
+
+        // Đẩy ra UI
+        _products.postValue(filteredList)
     }
 }
