@@ -29,6 +29,12 @@
             android:exported="false" />
         <activity android:name=".ui.order.OrderHistoryActivity" />
         <activity android:name=".ui.order.OrderDetailActivity" />
+        <activity android:name=".ui.cart.CartActivity" />
+        <activity android:name=".ui.checkout.CheckoutActivity" />
+        <activity
+                android:name=".ui.checkout.AddressSelectionActivity"
+                android:exported="false" />
+        <activity android:name=".ui.checkout.AddEditAddressActivity"/>
     </application>
 
 </manifest>

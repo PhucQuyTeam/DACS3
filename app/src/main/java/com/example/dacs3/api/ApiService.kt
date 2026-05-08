@@ -1,6 +1,7 @@
 package com.example.dacs3.api
 
 import com.example.dacs3.model.AuthResponse
+import com.example.dacs3.model.CartItemDTO
 import com.example.dacs3.model.LoginRequest
 import com.example.dacs3.model.OrderDTO
 import com.example.dacs3.model.OrderItemDTO
@@ -13,6 +14,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -22,6 +24,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+    data class ProvinceDTO(val id: Int, val name: String)
+    data class WardDTO(val id: Int, val name: String)
     @POST("auth/login")
     suspend fun login(@Body request: LoginRequest): Response<AuthResponse>
 
@@ -47,13 +51,57 @@ interface ApiService {
         @Part file: MultipartBody.Part?
     ): Response<AuthResponse>
 
-    @GET("/my-orders") // Hoặc /api/my-orders tùy cấu hình Spring Boot của bạn
+    @GET("/api/order/my-orders")
     suspend fun getMyOrders(
         @Query("status") status: Int
     ): Response<List<OrderDTO>>
-    @GET("/order-items")
+
+    // ĐÃ SỬA: Thêm /api/order vào trước đường dẫn
+    @GET("/api/order/order-items")
     suspend fun getOrderItems(
         @Query("orderId") orderId: Int
     ): Response<List<OrderItemDTO>>
-    ....
+
+    // API Thêm vào giỏ
+    @POST("/cart/add")
+    suspend fun addToCart(
+        @Query("productId") productId: Int,
+        @Query("quantity") quantity: Int
+    ): Response<okhttp3.ResponseBody>
+
+    // API Xem giỏ hàng
+    @GET("/cart/my-cart")
+    suspend fun getMyCart(): Response<List<CartItemDTO>>
+
+    @DELETE("/cart/remove/{cartId}")
+    suspend fun removeCartItem(@Path("cartId") cartId: Int): retrofit2.Response<okhttp3.ResponseBody>
+    // API Lấy danh sách địa chỉ
+    @GET("/api/user/address/my-addresses")
+    suspend fun getMyAddresses(): retrofit2.Response<List<com.example.dacs3.model.AddressDTO>>
+    // API Thêm địa chỉ mới
+
+    @GET("/api/user/address/provinces")
+    suspend fun getProvinces(): retrofit2.Response<List<ProvinceDTO>>
+
+    @GET("/api/user/address/wards")
+    suspend fun getWards(@Query("provinceId") provinceId: Int): retrofit2.Response<List<WardDTO>>
+    @POST("/api/user/address/add")
+    suspend fun addAddress(@Body request: HashMap<String, Any>): retrofit2.Response<okhttp3.ResponseBody>
+
+    // API Cập nhật địa chỉ
+    @PUT("/api/user/address/update")
+    suspend fun updateAddress(@Body request: HashMap<String, Any>): retrofit2.Response<okhttp3.ResponseBody>
+
+    // API Xóa địa chỉ
+    @DELETE("/api/user/address/delete/{id}")
+    suspend fun deleteAddress(@Path("id") id: Int): retrofit2.Response<okhttp3.ResponseBody>
+
+    @PUT("/cart/update") // Sếp nhớ check lại xem có cần thêm /api/ ở đầu không cho khớp Backend nhé
+    suspend fun updateCartQuantity(
+        @Query("cartId") cartId: Int,
+        @Query("quantity") quantity: Int
+    ): retrofit2.Response<okhttp3.ResponseBody>
+
+    @POST("/api/order/create") // Chú ý sửa lại đường dẫn này cho khớp với Controller của sếp
+    suspend fun placeOrder(@Body request: com.example.dacs3.model.OrderRequest): retrofit2.Response<okhttp3.ResponseBody>
 }

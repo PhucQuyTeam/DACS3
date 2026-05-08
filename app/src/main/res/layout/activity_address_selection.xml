@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarAddress"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:title="Chọn địa chỉ nhận hàng"
+            app:titleTextColor="@color/black"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:layout_alignParentTop="true" />
+
+    <LinearLayout
+            android:id="@+id/bottomAddBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:elevation="8dp"
+            android:padding="12dp">
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddAddress"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="+ Thêm địa chỉ mới"
+                android:textColor="#D32F2F"
+                app:backgroundTint="@color/white"
+                app:strokeColor="#D32F2F"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAddresses"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbarAddress"
+            android:layout_above="@id/bottomAddBar"
+            android:clipToPadding="false"
+            android:paddingTop="8dp" />
+
+</RelativeLayout>
