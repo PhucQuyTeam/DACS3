@@ -10,5 +10,6 @@ data class ProductHomeDTO(
     @SerializedName("description") val description: String?,
     @SerializedName("price") val price: Int,
     @SerializedName("quantity") val quantity: Int,
-    @SerializedName("categorieId") val categoryId: Int
+    @SerializedName("categorieId") val categoryId: Int,
+    @SerializedName("averageRating") val averageRating: Double
 )

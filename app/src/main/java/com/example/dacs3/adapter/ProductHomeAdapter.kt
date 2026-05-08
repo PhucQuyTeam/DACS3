@@ -13,6 +13,8 @@ import java.util.Locale
 class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productList = listOf<ProductHomeDTO>()
 
+    private val BASE_IMAGE_URL = "http://10.0.2.2:8081/upload/"
+
     fun submitList(list: List<ProductHomeDTO>) {
         productList = list
         notifyDataSetChanged()
@@ -27,12 +29,19 @@ class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.A
             binding.tvProductPrice.text = format.format(product.price)
 
             binding.tvProductSold.text = "Đã bán: ${product.totalProductQuantity}"
+            binding.tvRating.text = "${product.averageRating} ⭐"
+
+            var imageName = product.img ?: ""
+            if (imageName.startsWith("upload/")) {
+                imageName = imageName.replaceFirst("upload/", "")
+            }
+
+
+            val fullImageUrl = BASE_IMAGE_URL + imageName
 
             // Xử lý load ảnh bằng Glide.
-            // Lưu ý: Tùy thuộc vào đường dẫn ảnh lưu trong DB của bạn là full URL (http...) hay chỉ là tên file.
-            val imageUrl = product.img ?: ""
             Glide.with(binding.root.context)
-                .load(imageUrl)
+                .load(fullImageUrl)
                 .placeholder(R.drawable.logoaquariumshop) // Ảnh hiển thị khi đang load
                 .error(R.drawable.logoaquariumshop)       // Ảnh hiển thị khi lỗi
                 .into(binding.ivProductImage)

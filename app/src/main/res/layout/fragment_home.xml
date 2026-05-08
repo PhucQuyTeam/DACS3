@@ -79,6 +79,47 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
+<!--        search-->
+        <LinearLayout
+                android:id="@+id/layoutSearchBar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white"
+                android:visibility="gone"
+                android:elevation="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                    android:id="@+id/ivCloseSearch"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_back"
+                    app:tint="#757575"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_search_input"
+                    android:hint="Tìm kiếm sản phẩm..."
+                    android:textColorHint="#9E9E9E"
+                    android:textColor="#212121"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionSearch"/>
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -136,7 +177,7 @@
                     android:text="Cá cảnh" />
 
             <com.google.android.material.chip.Chip
-                    android:id="@+id/tep"
+                    android:id="@+id/chipTep"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 package com.example.dacs3.adapter
 
-import android.os.flagging.AconfigPackage.load
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +12,8 @@ import com.example.dacs3.model.ReviewDTO
 
 class ReviewAdapter: RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
     private var reviewList = listOf<ReviewDTO>()
+
+    private val BASE_IMAGE_URL = "http://10.0.2.2:8081/upload/"
 
     fun submitList(list: List<ReviewDTO>) {
         reviewList = list
@@ -26,9 +28,16 @@ class ReviewAdapter: RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
             binding.tvReviewDate.text = review.createdAt.toString().substringBefore("T")
 
             if(!review.image.isNullOrEmpty()){
+
+                var imageName = review.image ?: ""
+                if (imageName.startsWith("upload/")) {
+                    imageName = imageName.replaceFirst("upload/", "")
+                }
+                val fullImageUrl = BASE_IMAGE_URL + imageName
+
                 binding.ivReviewImage.visibility = View.VISIBLE
                 Glide.with(binding.root.context)
-                    .load(review.image)
+                    .load(fullImageUrl)
                     .placeholder(R.drawable.logoaquariumshop)
                     .into(binding.ivReviewImage)
             }else{
