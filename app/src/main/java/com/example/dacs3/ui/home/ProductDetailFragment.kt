@@ -88,8 +88,10 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.layoutReviews.btnViewAllReviews.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang màn hình Tất cả Đánh giá", Toast.LENGTH_SHORT).show()
-            // Thực hiện chuyển Fragment tại đây và truyền productId đi
+            val bundle = Bundle().apply {
+                putInt("productId", productId) // Gửi ID sản phẩm sang trang kia
+            }
+            findNavController().navigate(R.id.action_productDetailFragment_to_allReviewsFragment, bundle)
         }
     }
 
@@ -100,7 +102,7 @@ class ProductDetailFragment : Fragment() {
 
                 // 1. Gắn Slider Hình Ảnh Sản Phẩm
                 if (!it.imgages.isNullOrEmpty()) {
-                    setupImageSlider(it.imgages) // imgages (sai chính tả do API cũ của bạn)
+                    setupImageSlider(it.imgages)
                 }
 
                 val format = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))

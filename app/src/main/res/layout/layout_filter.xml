@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet" android:orientation="vertical"
+        android:padding="20dp">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bộ lọc tìm kiếm"
+            android:textColor="#212121"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đánh giá (Sao)"
+            android:textColor="#424242"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+        <EditText
+                android:id="@+id/etMinRating"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_input"
+                android:hint="Từ (VD: 3.5)"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                android:textSize="16sp"
+                android:layout_marginHorizontal="8dp"/>
+
+        <EditText
+                android:id="@+id/etMaxRating"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_input"
+                android:hint="Đến (VD: 5.0)"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khoảng giá (VNĐ)"
+            android:textColor="#424242"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+        <EditText
+                android:id="@+id/etMinPrice"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_input"
+                android:hint="TỐI THIỂU"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                android:textSize="16sp"
+                android:layout_marginHorizontal="8dp"/>
+
+        <EditText
+                android:id="@+id/etMaxPrice"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_input"
+                android:hint="TỐI ĐA"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/btnApplyFilter"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="#FF5722"
+            android:text="ÁP DỤNG"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+</LinearLayout>

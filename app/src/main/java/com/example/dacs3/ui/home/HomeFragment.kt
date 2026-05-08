@@ -1,5 +1,6 @@
 package com.example.dacs3.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -64,6 +67,8 @@ class HomeFragment : Fragment() {
         setupBanner()
         setupRecyclerView()
         setupViewModel()
+        setupFilter()
+        setupSearch()
     }
 
     private fun setupBanner() {
@@ -171,4 +176,81 @@ class HomeFragment : Fragment() {
         // 4. Gọi hàm fetch data từ Server
         homeViewModel.fetchProducts()
     }
+
+    fun setupFilter(){
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedId ->
+            if(checkedId.isEmpty() ){
+                homeViewModel.filterByCategory(-1)
+                return@setOnCheckedStateChangeListener
+            }
+
+            val selectedChipId = checkedId.first()
+
+            when(selectedChipId){
+                R.id.chipAll -> homeViewModel.filterByCategory(-1)
+                R.id.chipFish -> homeViewModel.filterByCategory(13)
+                R.id.chipTep -> homeViewModel.filterByCategory(14)
+                R.id.chipPlant -> homeViewModel.filterByCategory(15)
+                R.id.chipTool -> homeViewModel.filterByCategory(16)
+                R.id.vatTu -> homeViewModel.filterByCategory(17)
+
+            }
+
+        }
+
+    }
+
+    // --- XỬ LÝ TÌM KIẾM ---
+    private fun setupSearch() {
+        // 1. Khi ấn icon Kính lúp -> Hiện ô tìm kiếm, tự động nháy nháy con trỏ và bật bàn phím
+        binding.ivSearch.setOnClickListener {
+            binding.layoutSearchBar.visibility = View.VISIBLE
+            binding.etSearch.requestFocus()
+            showKeyboard(binding.etSearch)
+        }
+
+        // 2. Khi ấn nút Mũi tên quay lại trên thanh tìm kiếm -> Ẩn đi, tắt bàn phím
+        binding.ivCloseSearch.setOnClickListener {
+            binding.layoutSearchBar.visibility = View.GONE
+            binding.etSearch.text.clear()
+            hideKeyboard(binding.etSearch)
+        }
+
+        // 3. Bắt sự kiện khi người dùng ấn nút "Kính lúp / Enter" trên BÀN PHÍM ẢO
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = binding.etSearch.text.toString().trim()
+
+                if (query.isNotEmpty()) {
+                    // Tắt bàn phím
+                    hideKeyboard(binding.etSearch)
+
+                    // Ẩn thanh tìm kiếm ở trang chủ đi (để lỡ người dùng ấn nút Back từ trang Search về thì trang chủ nhìn vẫn gọn gàng)
+                    binding.layoutSearchBar.visibility = View.GONE
+                    binding.etSearch.text.clear()
+
+                    // Gói chữ người dùng vừa nhập và chuyển sang SearchFragment
+                    val bundle = Bundle().apply {
+                        putString("SEARCH_QUERY", query)
+                    }
+                    findNavController().navigate(R.id.action_nav_home_to_searchFragment, bundle)
+                }
+                true // Trả về true báo hiệu là đã xử lý xong sự kiện này
+            } else {
+                false
+            }
+        }
+    }
+
+    // --- 2 Hàm tiện ích bật/tắt bàn phím ---
+    private fun showKeyboard(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
 }
