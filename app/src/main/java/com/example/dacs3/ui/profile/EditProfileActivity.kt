@@ -99,7 +99,6 @@ class EditProfileActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     if (body.success) {
-                        Toast.makeText(this@EditProfileActivity, "Thành công!", Toast.LENGTH_SHORT).show()
                         finish() // Đóng Activity, lùi về Fragment
                     } else {
                         Toast.makeText(this@EditProfileActivity, body.message, Toast.LENGTH_SHORT).show()
