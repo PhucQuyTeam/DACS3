@@ -70,6 +70,13 @@ class LoginActivity : AppCompatActivity() {
                             // In ra Logcat để xác nhận là token đã về tới Android
                             println("Token lấy được: $token")
                             tokenManager.saveTokens(token, refToken ?: "")
+
+                            // BỔ SUNG: LẤY VÀ LƯU USER ID TỪ ĐÂY
+                            val userId = authResponse.user?.id
+                            if (userId != null) {
+                                tokenManager.saveUserId(userId)
+                                println("Đã lưu ID người dùng: $userId")
+                            }
                         } else {
                             println("LỖI: Server trả về thành công nhưng Token bị rỗng!")
                         }

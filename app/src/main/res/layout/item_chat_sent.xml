@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp">
+
+    <!-- Cụm tin nhắn -->
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_msg_sent"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:maxWidth="280dp"> <!-- Giới hạn chiều rộng để không bị tràn hết màn hình -->
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivChatImage"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/ChatImageRight" />
+
+        <!-- Nội dung tin nhắn -->
+        <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop ơi, tư vấn cho mình hồ thủy sinh mini nhé!"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:lineSpacingExtra="2dp" />
+
+        <!-- Thời gian -->
+        <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:text="14:30"
+                android:textColor="#FFCCBC"
+        android:textSize="11sp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -55,6 +55,21 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="16dp" />
 
+        <TextView
+                android:id="@+id/tvUnreadBadge"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_badge_red"
+                android:text="2"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/ivMessage"
+                app:layout_constraintEnd_toEndOf="@id/ivMessage"
+                android:layout_marginTop="-4dp"
+                android:layout_marginEnd="-4dp"/>
+
         <ImageView
                 android:id="@+id/ivCart"
                 android:layout_width="24dp"

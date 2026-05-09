@@ -8,4 +8,6 @@ class ProductRepository (private val apiService: ApiService) {
     suspend fun getProducts(): Response<List<ProductHomeDTO>> {
         return apiService.getHomeProducts()
     }
+
+    suspend fun getUnreadMessageCount() = apiService.getUnreadMessageCount()
 }
