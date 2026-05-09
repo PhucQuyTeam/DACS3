@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5"
+        tools:context=".ui.chat.chatFragment">
+
+        <!-- 1. THANH TOP BAR (Cố định phía trên) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutChatTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Nút Back -->
+        <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back"
+                app:tint="#212121"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Avatar Shop (Tùy chọn, thêm vào cho giống Shopee) -->
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivShopAvatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logoaquariumshop"
+                app:cornerSize="50%"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Tên Shop & Trạng thái -->
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivShopAvatar"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                    android:id="@+id/tvShopName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aquarium Shop"
+                    android:textColor="#212121"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                <!-- Chấm xanh Online -->
+                <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/bg_online_dot" />
+
+                <TextView
+                        android:id="@+id/tvOnlineStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="Đang hoạt động"
+                        android:textColor="#4CAF50"
+                        android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 2. KHUNG HIỂN THỊ TIN NHẮN (Cuộn ở giữa) -->
+                <!-- layout_height="0dp" kết hợp với Constraint giúp nó tự động chiếm phần không gian còn lại -->
+        <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/layoutChatInputBar"
+        app:layout_constraintTop_toBottomOf="@id/layoutChatTopBar" />
+
+                <!-- 3. THANH NHẬP LIỆU (Cố định ở dưới cùng) -->
+        <LinearLayout
+        android:id="@+id/layoutChatInputBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Nút (+) Thêm ảnh/tệp -->
+        <ImageButton
+                android:id="@+id/btnAddMedia"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_add"
+                app:tint="#757575" />
+        <!-- Bạn cần tạo icon ic_add trong Vector Asset nhé -->
+
+        <!-- Khung nhập text (Có chứa nút icon mặt cười bên trong) -->
+        <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="1">
+
+            <EditText
+                    android:id="@+id/etMessageInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_input"
+                    android:hint="Nhập tin nhắn..."
+                    android:inputType="textMultiLine"
+                    android:maxLines="4"
+                    android:minHeight="40dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="44dp"
+                    android:paddingVertical="10dp"
+                    android:textColor="#212121"
+                    android:textColorHint="#9E9E9E"
+                    android:textSize="15sp" />
+
+        </FrameLayout>
+
+        <!-- Nút Gửi tin nhắn (Màu cam chủ đạo) -->
+        <ImageButton
+                android:id="@+id/btnSend"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_send"
+                app:tint="#FF5722" />
+        <!-- Bạn tạo icon máy bay giấy ic_send trong Vector Asset -->
+
+        </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

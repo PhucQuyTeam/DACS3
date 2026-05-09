@@ -18,6 +18,10 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
 
     private var originnalProductList = listOf<ProductHomeDTO>()
 
+    // 1. THÊM BIẾN LƯU SỐ LƯỢNG TIN NHẮN CHƯA ĐỌC
+    private val _unreadCount = MutableLiveData<Int>()
+    val unreadCount: LiveData<Int> get() = _unreadCount
+
     var currentSearchQuery: String = ""
     var minRating: Double = 0.0
     var maxRating: Double = 5.0
@@ -90,4 +94,22 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
         // Đẩy ra UI
         _products.postValue(filteredList)
     }
+
+    fun fetchUnreadCount() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getUnreadMessageCount()
+                if (response.isSuccessful) {
+                    val count = response.body() ?: 0
+                    _unreadCount.postValue(count)
+                } else {
+                    _unreadCount.postValue(0)
+                }
+            } catch (e: Exception) {
+                // Nếu rớt mạng thì mặc định ẩn số đếm (gán = 0)
+                _unreadCount.postValue(0)
+            }
+        }
+    }
+
 }

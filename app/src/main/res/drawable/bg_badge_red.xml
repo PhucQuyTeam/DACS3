@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+
+    <!-- Màu đỏ rực nổi bật, chuẩn hệ thống cảnh báo -->
+    <solid android:color="#F44336" />
+
+    <!-- Bo tròn góc cực lớn để biến hình chữ nhật thành hình viên thuốc (pill shape) -->
+    <corners android:radius="100dp" />
+
+    <!-- Thêm khoảng cách mỏng ở các viền để chữ số bên trong không bị sát mép -->
+    <padding
+            android:left="4dp"
+            android:right="4dp"
+            android:top="1dp"
+            android:bottom="1dp" />
+
+</shape>

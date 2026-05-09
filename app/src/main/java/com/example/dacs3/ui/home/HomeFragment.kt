@@ -69,6 +69,7 @@ class HomeFragment : Fragment() {
         setupViewModel()
         setupFilter()
         setupSearch()
+
     }
 
     private fun setupBanner() {
@@ -175,6 +176,21 @@ class HomeFragment : Fragment() {
 
         // 4. Gọi hàm fetch data từ Server
         homeViewModel.fetchProducts()
+        homeViewModel.fetchUnreadCount() // BỔ SUNG DÒNG NÀY VÀO ĐÂY LÀ XONG!
+
+        // Lắng nghe và vẽ huy hiệu (Bạn đã viết sẵn rồi, giữ nguyên)
+        homeViewModel.unreadCount.observe(viewLifecycleOwner) { count ->
+            if (count > 0) {
+                binding.tvUnreadBadge.visibility = View.VISIBLE
+                binding.tvUnreadBadge.text = count.toString()
+            } else {
+                binding.tvUnreadBadge.visibility = View.GONE
+            }
+        }
+
+        binding.ivMessage.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_chatFragment)
+        }
     }
 
     fun setupFilter(){
