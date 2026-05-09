@@ -1,7 +1,9 @@
 package com.example.dacs3.api
 
 import com.example.dacs3.model.AuthResponse
+import com.example.dacs3.model.BaseResponse
 import com.example.dacs3.model.CartItemDTO
+import com.example.dacs3.model.ChatDTO
 import com.example.dacs3.model.LoginRequest
 import com.example.dacs3.model.OrderDTO
 import com.example.dacs3.model.OrderItemDTO
@@ -126,4 +128,21 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: HashMap<String, String>
     ): retrofit2.Response<okhttp3.ResponseBody>
+    // API Chat
+    @GET("/api/chat/history")
+    suspend fun getChatHistory(@Query("adminId") adminId: Int): Response<List<ChatDTO>>
+
+    @POST("/api/chat/send")
+    suspend fun sendMessage(@Body request: HashMap<String, Any>): Response<ChatDTO>
+
+    @GET("/api/chat/unread-count") // Backend cần viết thêm 1 API đếm tin chưa đọc
+    suspend fun getUnreadMessageCount(): Response<Int>
+
+    @PUT("/api/chat/mark-read")
+    suspend fun markChatAsRead(@Query("adminId") adminId: Int): retrofit2.Response<okhttp3.ResponseBody>
+
+    @Multipart
+    @POST("/api/chat/upload-image") // Backend cần viết API này
+    suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
+    // BaseResponse ở đây mình dùng lại cái cũ của bạn, thông điệp trả về (message) chính là "tên file ảnh".
 }

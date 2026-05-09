@@ -16,6 +16,9 @@
         <action
                 android:id="@+id/action_nav_home_to_searchFragment"
                 app:destination="@id/searchFragment" />
+        <action
+                android:id="@+id/action_nav_home_to_chatFragment"
+                app:destination="@id/chatFragment" />
     </fragment>
     <fragment
             android:id="@+id/nav_profile"
@@ -45,6 +48,11 @@
             android:name="com.example.dacs3.ui.home.allReviewsFragment"
             android:label="fragment_all_reviews"
             tools:layout="@layout/fragment_all_reviews" />
+    <fragment
+            android:id="@+id/chatFragment"
+            android:name="com.example.dacs3.ui.chat.chatFragment"
+            android:label="fragment_chat"
+            tools:layout="@layout/fragment_chat" />
     <fragment
             android:id="@+id/nav_notifications"
             android:name="com.example.dacs3.ui.notification.NotificationFragment"

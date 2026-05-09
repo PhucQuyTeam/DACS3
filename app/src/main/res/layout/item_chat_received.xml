@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp">
+
+    <!-- Avatar của Shop/Admin -->
+    <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logoaquariumshop"
+            app:cornerSize="50%" />
+
+    <!-- Cụm tin nhắn -->
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_msg_received"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:maxWidth="260dp"> <!-- Hẹp hơn một chút để chừa chỗ cho Avatar -->
+
+        <!-- Tên người gửi (Tùy chọn, thường dùng cho chat nhóm, nếu chat 1-1 có thể ẩn đi) -->
+        <TextView
+                android:id="@+id/tvSenderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aquarium Shop"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"
+                android:visibility="gone" /> <!-- Mặc định ẩn, bật lên nếu cần -->
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivChatImage"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/ChatImageLeft" />
+
+        <!-- Nội dung tin nhắn -->
+        <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chào bạn! Shop có rất nhiều mẫu hồ mini, bạn tham khảo nhé."
+                android:textColor="#212121"
+                android:textSize="15sp"
+                android:lineSpacingExtra="2dp" />
+
+        <!-- Thời gian -->
+        <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="4dp"
+                android:text="14:32"
+                android:textColor="#9E9E9E"
+                android:textSize="11sp" />
+
+    </LinearLayout>
+</LinearLayout>
