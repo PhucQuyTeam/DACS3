@@ -6,5 +6,6 @@ data class OrderDTO(
     val orderDate: String,
     val productName: String,
     val productImage: String,
-    val addressDetail: String
+    val addressDetail: String,
+    val paymentStatus: String?
 )

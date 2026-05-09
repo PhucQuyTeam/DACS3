@@ -35,6 +35,8 @@
                 android:name=".ui.checkout.AddressSelectionActivity"
                 android:exported="false" />
         <activity android:name=".ui.checkout.AddEditAddressActivity"/>
+        <activity android:name=".ui.profile.ChangePasswordActivity"/>
+
     </application>
 
 </manifest>

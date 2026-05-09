@@ -28,7 +28,7 @@ class OrderDetailActivity : AppCompatActivity() {
         val orderTotal = intent.getDoubleExtra("ORDER_TOTAL", 0.0)
         val orderAddress = intent.getStringExtra("ORDER_ADDRESS") ?: "Chưa rõ địa chỉ"
         val orderDate = intent.getStringExtra("ORDER_DATE") ?: "Chưa rõ ngày đặt"
-
+        val paymentStatus = intent.getStringExtra("ORDER_PAYMENT_STATUS")
         // 3. Đổ dữ liệu vào phần Đầu và phần Đáy (Dưới gạch ngang)
         binding.tvDetailOrderId.text = "Mã đơn: #$orderId"
         binding.tvDetailDate.text = "Ngày đặt: $orderDate"
@@ -37,6 +37,16 @@ class OrderDetailActivity : AppCompatActivity() {
 
         // Cài đặt RecyclerView (Danh sách món)
         binding.rvOrderItems.layoutManager = LinearLayoutManager(this)
+
+
+        // Tô màu cho TextView mới thêm vào
+        if (paymentStatus.equals("paid", ignoreCase = true) || paymentStatus.equals("Đã thanh toán", ignoreCase = true)) {
+            binding.tvDetailPaymentStatus.text = "Đã thanh toán "
+            binding.tvDetailPaymentStatus.setTextColor(android.graphics.Color.parseColor("#4CAF50"))
+        } else {
+            binding.tvDetailPaymentStatus.text = "Chưa thanh toán (COD)"
+            binding.tvDetailPaymentStatus.setTextColor(android.graphics.Color.parseColor("#FF9800"))
+        }
 
         // 4. Gọi API lấy danh sách các món hàng thuộc đơn này
         fetchOrderItems(orderId)
