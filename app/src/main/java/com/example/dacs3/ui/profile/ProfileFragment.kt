@@ -120,6 +120,10 @@ class ProfileFragment : Fragment() {
 
             startActivity(intent)
         }
+        binding.btnChangePassword.setOnClickListener {
+            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun loadUserProfile() {

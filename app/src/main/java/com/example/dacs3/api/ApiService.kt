@@ -18,6 +18,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -107,6 +108,26 @@ interface ApiService {
     @POST("/api/order/create") // Chú ý sửa lại đường dẫn này cho khớp với Controller của sếp
     suspend fun placeOrder(@Body request: com.example.dacs3.model.OrderRequest): retrofit2.Response<okhttp3.ResponseBody>
 
+    @POST("/api/order/create-zalopay")
+    suspend fun createZaloPayOrder(
+        @Body request: com.example.dacs3.model.OrderRequest
+    ): retrofit2.Response<okhttp3.ResponseBody>
+
+    @POST("/api/order/check-zalopay")
+    suspend fun checkZaloPayStatus(
+        @Query("app_trans_id") appTransId: String,
+        @Body request: com.example.dacs3.model.OrderRequest
+    ): retrofit2.Response<okhttp3.ResponseBody>
+    @GET("/api/notifications/my-notifications")
+    suspend fun getMyNotifications(
+        @Header("Authorization") token: String
+    ): retrofit2.Response<List<com.example.dacs3.model.NotificationDTO>>
+
+    @PUT("/api/user/change-password")
+    suspend fun changePassword(
+        @Header("Authorization") token: String,
+        @Body request: HashMap<String, String>
+    ): retrofit2.Response<okhttp3.ResponseBody>
     // API Chat
     @GET("/api/chat/history")
     suspend fun getChatHistory(@Query("adminId") adminId: Int): Response<List<ChatDTO>>
