@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
         android:padding="12dp"
         android:background="@color/white"
@@ -52,19 +52,27 @@
                     android:text="x1"
                     android:textColor="#757575" />
         </LinearLayout>
-        <Button
-                android:id="@+id/btnRateProduct"
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReviewProduct"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="end"
-                android:text="Đánh giá"
-                android:textSize="12sp"
-                android:textColor="#4CAF50"
-                android:backgroundTint="@android:color/white"
-                app:strokeColor="#009688"
-                app:strokeWidth="1dp"
+                android:text="Đánh giá ngay"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:icon="@drawable/star"
+                app:iconSize="16dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:backgroundTint="@null"
                 android:visibility="gone"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                android:background="@drawable/bg_btn_review"
+                app:elevation="4dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
     </LinearLayout>
 </LinearLayout>

@@ -49,7 +49,7 @@
     </fragment>
     <fragment
             android:id="@+id/allReviewsFragment"
-            android:name="com.example.dacs3.ui.home.allReviewsFragment"
+            android:name="com.example.dacs3.ui.home.AllReviewsFragment"
             android:label="fragment_all_reviews"
             tools:layout="@layout/fragment_all_reviews" />
     <fragment

@@ -1,8 +1,12 @@
 package com.example.dacs3.ui.auth
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.auth0.android.jwt.JWT
@@ -32,9 +36,55 @@ class SplashActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
 
-        // Dùng Coroutines để xử lý chạy ngầm
+        // =========================================================
+        // 1. HIỆU ỨNG GIAO DIỆN KIỂU DUOLINGO
+        // =========================================================
+
+        // Hiệu ứng nảy (Bounce) cho cụm Logo
+        binding.llMascot.scaleX = 0f
+        binding.llMascot.scaleY = 0f
+        binding.llMascot.animate()
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(1000)
+            .setInterpolator(OvershootInterpolator(1.5f))
+            .start()
+
+        // Hiệu ứng thay đổi câu thoại vui nhộn
+        val funnyMessages = listOf(
+            "Đang dọn rêu bể cá...",
+            "Đang cho cá ăn...",
+            "Đang bơm sục oxy...",
+            "Sắp xong rồi sếp ơi!"
+        )
+        val handler = Handler(Looper.getMainLooper())
+        var msgIndex = 0
+        val textRunnable = object : Runnable {
+            override fun run() {
+                binding.tvLoadingText.text = funnyMessages[msgIndex]
+                msgIndex++
+                if (msgIndex < funnyMessages.size) {
+                    handler.postDelayed(this, 700) // 0.7s đổi chữ 1 lần
+                }
+            }
+        }
+        handler.postDelayed(textRunnable, 500)
+
+        // Hiệu ứng thanh loading chạy mượt tới 100%
+        val animator = ValueAnimator.ofInt(0, 100)
+        animator.duration = 2800 // Chạy mất 2.8 giây
+        animator.addUpdateListener { animation ->
+            binding.loadingBar.progress = animation.animatedValue as Int
+        }
+        animator.start()
+
+
+        // =========================================================
+        // 2. CHẠY NGẦM XỬ LÝ TOKEN VÀ ĐIỀU HƯỚNG
+        // =========================================================
         lifecycleScope.launch(Dispatchers.IO) {
-            delay(1500) // Đợi 1.5 giây cho logo đẹp mắt
+            // Tăng thời gian đợi lên 3 giây để khách xem hết hiệu ứng UI
+            delay(4000)
             checkAndNavigate()
         }
     }

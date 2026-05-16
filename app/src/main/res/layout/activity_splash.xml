@@ -6,26 +6,74 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-    <!-- Chỉnh lại @drawable/logoaquariumshop thành tên file logo đúng của bạn nhé -->
-    <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/logoaquariumshop"
+    <LinearLayout
+            android:id="@+id/llMascot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.35">
 
-    <!-- Vòng tròn xoay xoay đang tải -->
-    <ProgressBar
-            android:layout_width="wrap_content"
+        <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/logoaquariumshop" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-black"
+                android:text="PQ AQUATIC"
+                android:textColor="#00A651"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/loadingBar"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:indeterminateTint="@color/primary_green"
+            android:layout_marginTop="50dp"
+            android:max="100"
+            android:progress="0"
+            app:indicatorColor="@color/primary_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+            app:layout_constraintTop_toBottomOf="@+id/llMascot"
+            app:trackColor="#F5F5F5"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="18dp" />
+
+    <TextView
+            android:id="@+id/tvLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Đang chuẩn bị bể..."
+            android:textColor="#9E9E9E"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loadingBar" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:letterSpacing="0.2"
+            android:text="FROM PQ TEAM"
+            android:textColor="#E0E0E0"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

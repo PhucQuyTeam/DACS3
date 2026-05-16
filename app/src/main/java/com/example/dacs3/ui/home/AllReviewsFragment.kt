@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dacs3.R
 import com.example.dacs3.adapter.ReviewAdapter
 import com.example.dacs3.databinding.FragmentAllReviewsBinding
 import com.example.dacs3.model.ReviewDTO
@@ -19,7 +18,7 @@ import com.example.dacs3.repository.ProductDetailRepository
 import com.example.dacs3.viewmodel.ProductDetailViewModel
 import com.example.dacs3.viewmodel.ProductDetailViewModelFactory
 
-class allReviewsFragment : Fragment() {
+class AllReviewsFragment : Fragment() {
 
     private var _binding: FragmentAllReviewsBinding? = null
     private val binding get() = _binding!!

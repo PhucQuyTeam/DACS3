@@ -149,10 +149,22 @@ interface ApiService {
     suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
     // BaseResponse ở đây mình dùng lại cái cũ của bạn, thông điệp trả về (message) chính là "tên file ảnh".
 
+    @Multipart
+    @POST("/api/reviews/add")
+    suspend fun addReview(
+        @Part("productId") productId: okhttp3.RequestBody,
+        @Part("orderId") orderId: okhttp3.RequestBody,
+        @Part("rating") rating: okhttp3.RequestBody,
+        @Part("comment") comment: okhttp3.RequestBody,
+        @Part image: okhttp3.MultipartBody.Part? // Ảnh có thể null
+    ): retrofit2.Response<okhttp3.ResponseBody>
+
     // API Lấy danh sách Blog
     @GET("/api/blogs")
     suspend fun getAllBlogs(): retrofit2.Response<List<BlogDTO>>
 
     @POST("/api/ai-chat/ask")
     suspend fun askAIBot(@Body request: AIChatRequest): retrofit2.Response<AIChatResponse>
+
+
 }
