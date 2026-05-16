@@ -31,7 +31,7 @@ class chatFragment : Fragment() {
     private lateinit var viewModel: ChatViewModel
     private lateinit var chatAdapter: ChatAdapter
 
-    private val ADMIN_ID = 1 // ID của chủ shop (bạn có thể truyền từ Bundle sang)
+    private val ADMIN_ID = 42 // ID của chủ shop (bạn có thể truyền từ Bundle sang)
     private var myUserId = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

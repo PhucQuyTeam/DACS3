@@ -1,7 +1,10 @@
 package com.example.dacs3.api
 
+import com.example.dacs3.model.AIChatRequest
+import com.example.dacs3.model.AIChatResponse
 import com.example.dacs3.model.AuthResponse
 import com.example.dacs3.model.BaseResponse
+import com.example.dacs3.model.BlogDTO
 import com.example.dacs3.model.CartItemDTO
 import com.example.dacs3.model.ChatDTO
 import com.example.dacs3.model.LoginRequest
@@ -145,4 +148,11 @@ interface ApiService {
     @POST("/api/chat/upload-image") // Backend cần viết API này
     suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
     // BaseResponse ở đây mình dùng lại cái cũ của bạn, thông điệp trả về (message) chính là "tên file ảnh".
+
+    // API Lấy danh sách Blog
+    @GET("/api/blogs")
+    suspend fun getAllBlogs(): retrofit2.Response<List<BlogDTO>>
+
+    @POST("/api/ai-chat/ask")
+    suspend fun askAIBot(@Body request: AIChatRequest): retrofit2.Response<AIChatResponse>
 }
