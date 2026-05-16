@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
         android:padding="12dp"
         android:background="@color/white"
@@ -51,5 +52,19 @@
                     android:text="x1"
                     android:textColor="#757575" />
         </LinearLayout>
+        <Button
+                android:id="@+id/btnRateProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="end"
+                android:text="Đánh giá"
+                android:textSize="12sp"
+                android:textColor="#4CAF50"
+                android:backgroundTint="@android:color/white"
+                app:strokeColor="#009688"
+                app:strokeWidth="1dp"
+                android:visibility="gone"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
     </LinearLayout>
 </LinearLayout>

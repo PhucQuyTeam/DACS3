@@ -1,11 +1,13 @@
 package com.example.dacs3.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -69,6 +71,8 @@ class HomeFragment : Fragment() {
         setupViewModel()
         setupFilter()
         setupSearch()
+        setupFabAIChat()
+
 
     }
 
@@ -267,6 +271,61 @@ class HomeFragment : Fragment() {
     private fun hideKeyboard(view: View) {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupFabAIChat() {
+        var dX = 0f
+        var dY = 0f
+        var initialTouchX = 0f
+        var initialTouchY = 0f
+
+        binding.fabAIChat.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                // 1. KHI NGƯỜI DÙNG VỪA CHẠM NGÓN TAY VÀO NÚT
+                MotionEvent.ACTION_DOWN -> {
+                    dX = view.x - event.rawX
+                    dY = view.y - event.rawY
+                    initialTouchX = event.rawX
+                    initialTouchY = event.rawY
+                    true // Báo cho Android biết là mình đã ghi nhận cú chạm
+                }
+
+                // 2. KHI NGƯỜI DÙNG DI CHUYỂN NGÓN TAY (KÉO LÊ)
+                MotionEvent.ACTION_MOVE -> {
+                    val newX = event.rawX + dX
+                    val newY = event.rawY + dY
+
+                    // Lấy kích thước màn hình (parent) để chặn không cho nút bay ra ngoài rìa
+                    val parent = view.parent as View
+                    val maxX = parent.width - view.width.toFloat()
+                    val maxY = parent.height - view.height.toFloat()
+
+                    // Cập nhật tọa độ mới cho nút (Dùng coerceIn để ép tọa độ nằm trong màn hình)
+                    view.animate()
+                        .x(newX.coerceIn(0f, maxX))
+                        .y(newY.coerceIn(0f, maxY))
+                        .setDuration(0) // Di chuyển tức thời không có độ trễ
+                        .start()
+                    true
+                }
+
+                // 3. KHI NGƯỜI DÙNG NHẤC NGÓN TAY LÊN
+                MotionEvent.ACTION_UP -> {
+                    // Tính toán xem người dùng vừa KÉO hay chỉ CLICK nhẹ
+                    val diffX = Math.abs(event.rawX - initialTouchX)
+                    val diffY = Math.abs(event.rawY - initialTouchY)
+
+                    // Nếu ngón tay di chuyển dưới 10 pixel -> Coi như là một cú Click
+                    if (diffX < 10 && diffY < 10) {
+                        // MỞ MÀN HÌNH CHAT AI
+                        findNavController().navigate(R.id.action_nav_home_to_AIChatFragment)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 }
