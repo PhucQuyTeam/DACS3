@@ -166,4 +166,5 @@ interface ApiService {
     @POST("/api/ai-chat/ask")
     suspend fun askAIBot(@Body request: AIChatRequest): retrofit2.Response<AIChatResponse>
 
+
 }

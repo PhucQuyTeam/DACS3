@@ -19,6 +19,10 @@
         <action
                 android:id="@+id/action_nav_home_to_chatFragment"
                 app:destination="@id/chatFragment" />
+        <action
+                android:id="@+id/action_nav_home_to_AIChatFragment"
+                app:destination="@id/AIChatFragment" />
+
     </fragment>
     <fragment
             android:id="@+id/nav_profile"
@@ -57,4 +61,23 @@
             android:id="@+id/nav_notifications"
             android:name="com.example.dacs3.ui.notification.NotificationFragment"
             android:label="NotificationFragment" />
+    <fragment
+            android:id="@+id/nav_blog"
+            android:name="com.example.dacs3.ui.blog.BlogFragment"
+            android:label="fragment_blog"
+            tools:layout="@layout/fragment_blog" >
+        <action
+                android:id="@+id/action_blogFragment_to_blogDetailFragment"
+                app:destination="@id/blogDetailFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/blogDetailFragment"
+            android:name="com.example.dacs3.ui.blog.blogDetailFragment"
+            android:label="blogDetailFragment" />
+    <dialog
+            android:id="@+id/AIChatFragment"
+            android:name="com.example.dacs3.ui.chat.AIChatFragment"
+            android:label="fragment_a_i_chat"
+            tools:layout="@layout/fragment_a_i_chat" />
+
 </navigation>
