@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F5F5F5"
-        tools:context=".ui.home.allReviewsFragment">
+        tools:context=".ui.home.AllReviewsFragment">
 
     <!-- 1. TOP BAR (Thanh công cụ trên cùng) -->
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -145,4 +145,14 @@ interface ApiService {
     @POST("/api/chat/upload-image") // Backend cần viết API này
     suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
     // BaseResponse ở đây mình dùng lại cái cũ của bạn, thông điệp trả về (message) chính là "tên file ảnh".
+
+    @Multipart
+    @POST("/api/reviews/add")
+    suspend fun addReview(
+        @Part("productId") productId: okhttp3.RequestBody,
+        @Part("orderId") orderId: okhttp3.RequestBody,
+        @Part("rating") rating: okhttp3.RequestBody,
+        @Part("comment") comment: okhttp3.RequestBody,
+        @Part image: okhttp3.MultipartBody.Part? // Ảnh có thể null
+    ): retrofit2.Response<okhttp3.ResponseBody>
 }
