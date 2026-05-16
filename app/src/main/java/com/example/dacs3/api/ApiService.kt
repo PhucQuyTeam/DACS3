@@ -1,7 +1,10 @@
 package com.example.dacs3.api
 
+import com.example.dacs3.model.AIChatRequest
+import com.example.dacs3.model.AIChatResponse
 import com.example.dacs3.model.AuthResponse
 import com.example.dacs3.model.BaseResponse
+import com.example.dacs3.model.BlogDTO
 import com.example.dacs3.model.CartItemDTO
 import com.example.dacs3.model.ChatDTO
 import com.example.dacs3.model.LoginRequest
@@ -155,4 +158,12 @@ interface ApiService {
         @Part("comment") comment: okhttp3.RequestBody,
         @Part image: okhttp3.MultipartBody.Part? // Ảnh có thể null
     ): retrofit2.Response<okhttp3.ResponseBody>
+
+    // API Lấy danh sách Blog
+    @GET("/api/blogs")
+    suspend fun getAllBlogs(): retrofit2.Response<List<BlogDTO>>
+
+    @POST("/api/ai-chat/ask")
+    suspend fun askAIBot(@Body request: AIChatRequest): retrofit2.Response<AIChatResponse>
+
 }
