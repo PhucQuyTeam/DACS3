@@ -67,7 +67,7 @@
                 android:layout_height="80dp"
                 android:layout_marginTop="12dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logoaquariumshop"
+                android:src="@drawable/logoaquariumshop1"
                 app:cornerSize="8dp"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

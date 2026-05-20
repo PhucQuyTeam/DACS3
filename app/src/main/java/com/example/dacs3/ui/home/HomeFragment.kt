@@ -23,26 +23,23 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.dacs3.R
 import com.example.dacs3.adapter.BannerAdapter
 import com.example.dacs3.adapter.ProductHomeAdapter
-import com.example.dacs3.api.ApiService
 import com.example.dacs3.databinding.FragmentHomeBinding
 import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.repository.ProductRepository
 import com.example.dacs3.viewmodel.HomeViewModel
 import com.example.dacs3.viewmodel.HomeViewModelFactory
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.abs
 
 class HomeFragment : Fragment() {
 
-    // 1. CHUẨN KHAI BÁO BINDING CHO FRAGMENT (Tránh rò rỉ bộ nhớ)
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    // Biến dùng để auto-scroll
+    //  auto-scroll
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
-    // MVVM Components
+
     private lateinit var productAdapter: ProductHomeAdapter
     private lateinit var homeViewModel: HomeViewModel
 
@@ -51,19 +48,18 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root // Chỉ return giao diện ở đây, không viết thêm logic gì phía dưới
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 2. MỌI LOGIC XỬ LÝ CHUYỂN XUỐNG ĐÂY
         // Đẩy lề cho TopBar để tránh thanh trạng thái
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTopBar) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(0, systemBars.top, 0, 0)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTopBar) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(0, systemBars.top, 0, 0)
+//            insets
+//        }
 
 
         setupBanner()
@@ -72,13 +68,14 @@ class HomeFragment : Fragment() {
         setupFilter()
         setupSearch()
         setupFabAIChat()
-
-
+        binding.ivCart.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_cartActivity)
+        }
     }
 
     private fun setupBanner() {
         val images = listOf(
-            R.drawable.logoaquariumshop,
+            R.drawable.hinhthuysinh3,
             R.drawable.hinhthuysinh1,
             R.drawable.hinhthuysinh2,
         )

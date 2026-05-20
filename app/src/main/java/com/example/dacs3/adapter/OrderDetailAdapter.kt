@@ -52,8 +52,8 @@ class OrderDetailAdapter(
 
         Glide.with(holder.itemView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.logoaquariumshop)
-            .error(R.drawable.logoaquariumshop)
+            .placeholder(R.drawable.logoaquariumshop1)
+            .error(R.drawable.logoaquariumshop1)
             .into(holder.imgItem)
 
         // LOGIC HIỆN NÚT ĐÁNH GIÁ

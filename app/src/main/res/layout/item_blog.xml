@@ -22,7 +22,7 @@
                     android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="16:9"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/logoaquariumshop" />
+                    tools:src="@drawable/logoaquariumshop1" />
 
             <TextView
                     android:id="@+id/tvBlogCategory"

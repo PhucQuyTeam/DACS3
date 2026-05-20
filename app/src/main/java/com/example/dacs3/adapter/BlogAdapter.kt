@@ -31,8 +31,8 @@ class BlogAdapter(private val onItemClick: (BlogDTO) -> Unit) :
 
             Glide.with(binding.root.context)
                 .load(BASE_IMAGE_URL + imageName)
-                .placeholder(R.drawable.logoaquariumshop)
-                .error(R.drawable.logoaquariumshop)
+                .placeholder(R.drawable.logoaquariumshop1)
+                .error(R.drawable.logoaquariumshop1)
                 .into(binding.ivBlogThumbnail)
 
             // Sự kiện click vào bài viết

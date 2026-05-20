@@ -47,8 +47,8 @@ class blogDetailFragment : Fragment() {
 
             Glide.with(this)
                 .load(BASE_IMAGE_URL + imageName)
-                .placeholder(R.drawable.logoaquariumshop)
-                .error(R.drawable.logoaquariumshop)
+                .placeholder(R.drawable.logoaquariumshop1)
+                .error(R.drawable.logoaquariumshop1)
                 .into(binding.ivDetailHeader)
         }
     }

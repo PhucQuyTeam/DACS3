@@ -27,8 +27,6 @@ class HomeActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // Chỉ đẩy padding top bằng với chiều cao thanh trạng thái
-            // Trái, phải, dưới giữ nguyên (0) để không làm móp méo giao diện
             v.setPadding(0, systemBars.top, 0, 0)
             insets
         }
