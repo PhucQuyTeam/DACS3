@@ -22,13 +22,20 @@
         <action
                 android:id="@+id/action_nav_home_to_AIChatFragment"
                 app:destination="@id/AIChatFragment" />
+        <action
+                android:id="@+id/action_nav_home_to_cartActivity"
+                app:destination="@id/cartActivity" />
 
     </fragment>
     <fragment
             android:id="@+id/nav_profile"
             android:name="com.example.dacs3.ui.profile.ProfileFragment"
             android:label="fragment_profile"
-            tools:layout="@layout/fragment_profile" />
+            tools:layout="@layout/fragment_profile" >
+        <action
+                android:id="@+id/action_nav_profile_to_chatFragment"
+                app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
             android:id="@+id/productDetailFragment"
             android:name="com.example.dacs3.ui.home.ProductDetailFragment"
@@ -79,5 +86,9 @@
             android:name="com.example.dacs3.ui.chat.AIChatFragment"
             android:label="fragment_a_i_chat"
             tools:layout="@layout/fragment_a_i_chat" />
+    <activity
+            android:id="@+id/cartActivity"
+            android:name="com.example.dacs3.ui.cart.CartActivity"
+            android:label="CartActivity" />
 
 </navigation>

@@ -1,6 +1,5 @@
 package com.example.dacs3.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,7 @@ class ProductImageSliderAdapter(private val imageUrls: List<String>) : RecyclerV
         val fullImageUrl = BASE_IMAGE_URL + imageName
         Glide.with(holder.imageView.context)
             .load(fullImageUrl)
-            .placeholder(R.drawable.logoaquariumshop)
+            .placeholder(R.drawable.logoaquariumshop1)
             .into(holder.imageView)
     }
 

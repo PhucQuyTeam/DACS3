@@ -123,8 +123,8 @@ class ChatAdapter(private val adminId: Int) : ListAdapter<ChatDTO, RecyclerView.
 
             Glide.with(binding.root.context)
                 .load(fullImageUrl)
-                .placeholder(R.drawable.logoaquariumshop)
-                .error(R.drawable.logoaquariumshop)
+                .placeholder(R.drawable.logoaquariumshop1)
+                .error(R.drawable.logoaquariumshop1)
                 .into(binding.ivAvatar)
         }
     }

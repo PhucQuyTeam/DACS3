@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.dacs3.R
 import com.example.dacs3.databinding.FragmentProfileBinding
 import com.example.dacs3.network.RetrofitClient
 import com.example.dacs3.ui.auth.LoginActivity
 import com.example.dacs3.Token.TokenManager
-import com.example.dacs3.model.UserDTO
 import com.example.dacs3.model.UserProfileDTO
+import com.example.dacs3.ui.chat.chatFragment
 import com.example.dacs3.ui.order.OrderHistoryActivity
 import kotlinx.coroutines.launch
 
@@ -124,6 +125,10 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
             startActivity(intent)
         }
+
+        binding.btnMessages.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_profile_to_chatFragment)
+        }
     }
 
     private fun loadUserProfile() {
@@ -153,13 +158,13 @@ class ProfileFragment : Fragment() {
                         Glide.with(requireContext())
                             .load(imageUrl)
                             .circleCrop() // LỆNH NÀY SẼ ÉP ẢNH PHẢI CẮT TRÒN XOE 100%
-                            .placeholder(R.drawable.logoaquariumshop)
-                            .error(R.drawable.logoaquariumshop)
+                            .placeholder(R.drawable.logoaquariumshop1)
+                            .error(R.drawable.logoaquariumshop1)
                             .into(binding.imgAvatar)
                     } else {
                         // Nếu DB trả về null, load ảnh mặc định và bo tròn
                         Glide.with(requireContext())
-                            .load(R.drawable.logoaquariumshop)
+                            .load(R.drawable.logoaquariumshop1)
                             .circleCrop()
                             .into(binding.imgAvatar)
                     }

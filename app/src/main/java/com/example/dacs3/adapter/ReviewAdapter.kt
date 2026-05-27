@@ -38,7 +38,7 @@ class ReviewAdapter: RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
                 binding.ivReviewImage.visibility = View.VISIBLE
                 Glide.with(binding.root.context)
                     .load(fullImageUrl)
-                    .placeholder(R.drawable.logoaquariumshop)
+                    .placeholder(R.drawable.logoaquariumshop1)
                     .into(binding.ivReviewImage)
             }else{
                 binding.ivReviewImage.visibility = View.GONE

@@ -50,8 +50,8 @@ class CartAdapter(
 
         Glide.with(holder.itemView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.logoaquariumshop)
-            .error(R.drawable.logoaquariumshop) // Bổ sung bắt lỗi nhỡ URL die
+            .placeholder(R.drawable.logoaquariumshop1)
+            .error(R.drawable.logoaquariumshop1) // Bổ sung bắt lỗi nhỡ URL die
             .into(holder.imgProduct)
 
         holder.btnDelete.setOnClickListener {

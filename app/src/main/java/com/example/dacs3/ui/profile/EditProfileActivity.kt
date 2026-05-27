@@ -50,7 +50,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (oldAvatar.isNotEmpty()) {
             val imageUrl = "http://10.0.2.2:8081/upload/$oldAvatar"
             Glide.with(this).load(imageUrl).circleCrop()
-                .placeholder(R.drawable.logoaquariumshop)
+                .placeholder(R.drawable.logoaquariumshop1)
                 .into(binding.imgEditAvatar)
         }
 

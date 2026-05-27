@@ -15,7 +15,7 @@
             android:minHeight="?attr/actionBarSize"
             android:background="@android:color/white"
             android:elevation="4dp"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="5dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -24,16 +24,16 @@
                 android:id="@+id/ivLogo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/logoaquariumshop"
+                android:src="@drawable/logoaquariumshop1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
                 android:id="@+id/tvAppName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AQUARIUM SHOP"
+                android:text="PQ AQUARIUM"
                 android:textColor="#2E7D32"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -41,7 +41,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.388" />
+                app:layout_constraintHorizontal_bias="0.26" />
 
         <ImageView
                 android:id="@+id/ivMessage"

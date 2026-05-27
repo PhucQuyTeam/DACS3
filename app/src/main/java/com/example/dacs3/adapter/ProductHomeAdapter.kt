@@ -42,8 +42,8 @@ class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.A
             // Xử lý load ảnh bằng Glide.
             Glide.with(binding.root.context)
                 .load(fullImageUrl)
-                .placeholder(R.drawable.logoaquariumshop) // Ảnh hiển thị khi đang load
-                .error(R.drawable.logoaquariumshop)       // Ảnh hiển thị khi lỗi
+                .placeholder(R.drawable.logoaquariumshop1) // Ảnh hiển thị khi đang load
+                .error(R.drawable.logoaquariumshop1)       // Ảnh hiển thị khi lỗi
                 .into(binding.ivProductImage)
 
             binding.root.setOnClickListener {

@@ -43,8 +43,8 @@ class CheckoutItemAdapter(private val items: List<CartItemDTO>) :
 
         Glide.with(holder.itemView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.logoaquariumshop) // Ảnh lúc đang tải
-            .error(R.drawable.logoaquariumshop)       // Ảnh lúc bị lỗi link
+            .placeholder(R.drawable.logoaquariumshop1) // Ảnh lúc đang tải
+            .error(R.drawable.logoaquariumshop1)       // Ảnh lúc bị lỗi link
             .into(holder.imgProduct)
     }
 
