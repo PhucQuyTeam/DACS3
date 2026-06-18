@@ -69,6 +69,11 @@ class EditProfileActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (newPhone.length != 10) {
+                Toast.makeText(this, "Số điện thoại phải có 10 chữ số!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             uploadData(newName, newPhone)
         }
     }
