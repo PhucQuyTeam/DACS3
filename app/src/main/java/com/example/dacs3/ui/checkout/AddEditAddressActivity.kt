@@ -129,6 +129,11 @@ class AddEditAddressActivity : AppCompatActivity() {
             return
         }
 
+        if(phone.length != 10){
+            Toast.makeText(this, "Số điện thoại phải đủ 10 số", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         binding.btnSaveAddress.isEnabled = false
 
         lifecycleScope.launch {

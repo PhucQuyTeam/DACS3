@@ -38,6 +38,16 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(!email.endsWith("@gmail.com")){
+                Toast.makeText(this, "Email phải kết thúc bằng @gmail.com", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(password.length < 6 ){
+                Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (password != confirmPass) {
                 Toast.makeText(this, "Mật khẩu xác nhận không khớp!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

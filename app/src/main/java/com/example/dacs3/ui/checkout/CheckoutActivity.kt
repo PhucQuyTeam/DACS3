@@ -134,7 +134,7 @@ class CheckoutActivity : AppCompatActivity() {
                         Toast.makeText(this@CheckoutActivity, "Đặt hàng thành công!", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@CheckoutActivity, OrderHistoryActivity::class.java)
                         intent.putExtra("TARGET_TAB", 0)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     } else {
@@ -190,7 +190,7 @@ class CheckoutActivity : AppCompatActivity() {
                     Toast.makeText(this@CheckoutActivity, "Thanh toán ZaloPay thành công!", Toast.LENGTH_LONG).show()
                     val orderIntent = Intent(this@CheckoutActivity, OrderHistoryActivity::class.java)
                     orderIntent.putExtra("TARGET_TAB", 0)
-                    orderIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    //orderIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(orderIntent)
                     finish()
                 } else {
