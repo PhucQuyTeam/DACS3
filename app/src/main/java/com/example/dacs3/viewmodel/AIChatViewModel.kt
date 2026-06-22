@@ -22,25 +22,25 @@ class AIChatViewModel(private val repository: AIChatRepository) : ViewModel() {
     fun sendMessage(userText: String) {
         val currentList = _messages.value?.toMutableList() ?: mutableListOf()
 
-        // 1. Thêm tin nhắn của User lên màn hình
+
         currentList.add(AIMessageModel(text = userText, isUser = true))
 
-        // 2. Thêm một cái bong bóng "AI đang gõ..."
+
         val typingMsg = AIMessageModel(text = "Đang suy nghĩ...", isUser = false, isTyping = true)
         currentList.add(typingMsg)
         _messages.value = currentList
 
-        // 3. Gọi API hỏi Google Gemini
+
         viewModelScope.launch {
             try {
                 val response = repository.askAI(userText)
 
-                // Xóa bong bóng "Đang suy nghĩ..." đi
+
                 val updatedList = _messages.value?.toMutableList() ?: mutableListOf()
                 updatedList.removeAll { it.isTyping }
 
                 if (response.isSuccessful && response.body() != null) {
-                    // Thêm câu trả lời của AI vào
+
                     val aiReply = response.body()!!.reply
                     updatedList.add(AIMessageModel(text = aiReply, isUser = false))
                 } else {

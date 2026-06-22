@@ -24,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         tokenManager.clearTokens()
 
         binding.txtGoToLogin.setOnClickListener {
-            finish() //
+            finish()
         }
 
         binding.btnRegister.setOnClickListener {
@@ -59,7 +59,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun performRegister(email: String, pass: String) {
         lifecycleScope.launch {
             try {
-                // Gửi request với email và pass, tên và sđt lấy mặc định như khai báo trong Model
+
                 val request = RegisterRequest(email, pass)
                 val response = RetrofitClient.getInstance(this@RegisterActivity).register(request)
 
@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
 
                     if (authResponse.success) {
                         Toast.makeText(this@RegisterActivity, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_LONG).show()
-                        finish()
+                        finish() // Về màn hình đăng nhập
                     } else {
                         Toast.makeText(this@RegisterActivity, authResponse.message, Toast.LENGTH_SHORT).show()
                     }

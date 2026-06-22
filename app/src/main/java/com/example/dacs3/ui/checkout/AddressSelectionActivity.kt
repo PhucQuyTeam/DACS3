@@ -24,15 +24,13 @@ class AddressSelectionActivity : AppCompatActivity() {
         binding.toolbarAddress.setNavigationOnClickListener { finish() }
         binding.rvAddresses.layoutManager = LinearLayoutManager(this)
 
-        // Bắt sự kiện bấm nút "+ Thêm địa chỉ mới" ở dưới đáy
+
         binding.btnAddAddress.setOnClickListener {
             val intent = Intent(this, AddEditAddressActivity::class.java)
             startActivity(intent)
         }
     }
 
-    // Dùng onResume để mỗi lần màn hình này hiện lên (kể cả lúc từ trang Thêm/Sửa quay lại),
-    // nó sẽ tự động gọi API lấy danh sách địa chỉ mới nhất.
     override fun onResume() {
         super.onResume()
         loadAddresses()

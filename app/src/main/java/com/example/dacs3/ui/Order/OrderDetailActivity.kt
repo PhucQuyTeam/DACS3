@@ -27,6 +27,7 @@ class OrderDetailActivity : AppCompatActivity() {
     private var previewCard: View? = null
     private var previewImageView: ImageView? = null
 
+    // 1. Bộ chọn ảnh từ thư viện
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             selectedImageUri = it
@@ -43,12 +44,14 @@ class OrderDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarOrderDetail)
         binding.toolbarOrderDetail.setNavigationOnClickListener { finish() }
 
+
         val orderId = intent.getIntExtra("ORDER_ID", 0)
         val orderTotal = intent.getDoubleExtra("ORDER_TOTAL", 0.0)
         val orderAddress = intent.getStringExtra("ORDER_ADDRESS") ?: "Chưa rõ địa chỉ"
         val orderDate = intent.getStringExtra("ORDER_DATE") ?: "Chưa rõ ngày đặt"
         val paymentStatus = intent.getStringExtra("ORDER_PAYMENT_STATUS")
         val deliveryStatus = intent.getStringExtra("ORDER_DELIVERY_STATUS") ?: "pending"
+
 
         binding.tvDetailOrderId.text = "Mã đơn: #$orderId"
         binding.tvDetailDate.text = "Ngày đặt: $orderDate"
@@ -138,6 +141,7 @@ class OrderDetailActivity : AppCompatActivity() {
                         Toast.makeText(this@OrderDetailActivity, "Cảm ơn sếp đã đánh giá!", Toast.LENGTH_SHORT).show()
                         bottomSheetDialog.dismiss()
 
+                        // LOCK NÚT LẠI NGAY LẬP TỨC TRÊN GIAO DIỆN
                         itemList[position].isReviewed = true
                         binding.rvOrderItems.adapter?.notifyItemChanged(position)
                     } else {

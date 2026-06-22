@@ -26,14 +26,12 @@ class LoginActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         tokenManager.clearTokens()
 
-        // chuyển sang màn đăng ký
         binding.txtGoToRegister.setOnClickListener {
 
             val intent = Intent(this, RegisterActivity::class.java)
 
             startActivity(intent)
         }
-        // bấm nút đăng nhập
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
@@ -70,15 +68,16 @@ class LoginActivity : AppCompatActivity() {
                     if (authResponse.success) {
                         Toast.makeText(this@LoginActivity, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
 
-                        // lưu token mới
+                        // --- ĐOẠN CODE LƯU TOKEN MỚI ---
                         val token = authResponse.token
                         val refToken = authResponse.refreshToken
 
                         if (!token.isNullOrEmpty()) {
-                            // in ra Logcat để xác nhận là token đã về tới Android
+                            // In ra Logcat để xác nhận là token đã về tới Android
                             println("Token lấy được: $token")
                             tokenManager.saveTokens(token, refToken ?: "")
 
+                            // BỔ SUNG: LẤY VÀ LƯU USER ID TỪ ĐÂY
                             val userId = authResponse.user?.id
                             if (userId != null) {
                                 tokenManager.saveUserId(userId)
@@ -87,6 +86,8 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             println("LỖI: Server trả về thành công nhưng Token bị rỗng!")
                         }
+
+
                         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()

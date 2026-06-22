@@ -36,7 +36,6 @@ class SplashActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
 
-        // Hiệu ứng nảy (Bounce) cho cụm Logo
         binding.llMascot.scaleX = 0f
         binding.llMascot.scaleY = 0f
         binding.llMascot.animate()
@@ -60,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
                 binding.tvLoadingText.text = funnyMessages[msgIndex]
                 msgIndex++
                 if (msgIndex < funnyMessages.size) {
-                    handler.postDelayed(this, 700) // 0.7s đổi chữ 1 lần
+                    handler.postDelayed(this, 700)
                 }
             }
         }
@@ -74,7 +73,8 @@ class SplashActivity : AppCompatActivity() {
         }
         animator.start()
 
-      // chạy ngầm token điều hướng đến home
+
+
         lifecycleScope.launch(Dispatchers.IO) {
             delay(4000)
             checkAndNavigate()
@@ -90,19 +90,19 @@ class SplashActivity : AppCompatActivity() {
             return
         }
 
-        // kiểm tra token
+
         if (isTokenExpiringSoon(accessToken)) {
-            Log.d("Splash", "Tokenn đã hết...")
+            Log.d("Splash", "Vé cũ đã hết hạn! Xin vé mới ngay tại cổng...")
             val isRefreshSuccess = refreshAccessTokenSync(refreshToken)
             if (isRefreshSuccess) {
                 goToHome()
             } else {
-                Log.e("Splash", "Refresh token đã hết  -> Yêu cầu Đăng nhập lại.")
+                Log.e("Splash", "Vé chết, Thẻ VIP cũng chết -> Yêu cầu Đăng nhập lại.")
                 tokenManager.clearTokens()
                 goToLogin()
             }
         } else {
-            Log.d("Splash", "Token còn hiệu lực! Xin mời vào...")
+            Log.d("Splash", "Vé còn sống nguyên! Xin mời vào...")
             goToHome()
         }
     }

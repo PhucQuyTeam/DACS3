@@ -36,12 +36,10 @@ class ProductDetailFragment : Fragment() {
     private lateinit var viewmodel: ProductDetailViewModel
     private lateinit var reviewAdapter: ReviewAdapter
 
-    // Biến lưu trữ dữ liệu
     private var productId: Int = -1
     private var maxStock: Int = 1
     private var currentQuantity: Int = 1
 
-    // Biến cho auto-scroll Slider ảnh
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -91,7 +89,7 @@ class ProductDetailFragment : Fragment() {
 
         binding.layoutReviews.btnViewAllReviews.setOnClickListener {
             val bundle = Bundle().apply {
-                putInt("productId", productId) // Gửi ID sản phẩm sang trang kia
+                putInt("productId", productId)
             }
             findNavController().navigate(R.id.action_productDetailFragment_to_allReviewsFragment, bundle)
         }
@@ -100,9 +98,8 @@ class ProductDetailFragment : Fragment() {
     private fun setupObservers(){
         viewmodel.productDetail.observe(viewLifecycleOwner) { product ->
             product?.let {
-                maxStock = it.quantity // Cập nhật giới hạn tồn kho
+                maxStock = it.quantity
 
-                // 1. Gắn Slider Hình Ảnh Sản Phẩm
                 if (!it.imgages.isNullOrEmpty()) {
                     setupImageSlider(it.imgages)
                 }
@@ -114,19 +111,18 @@ class ProductDetailFragment : Fragment() {
                 binding.layoutInfo.tvProductName.text = it.name
                 binding.layoutInfo.chipCategory.text = it.categorieName
 
-                // Xử lý hiển thị Tình trạng kho hàng
+
                 if (it.quantity > 0) {
                     binding.layoutInfo.tvStatus.text = "Tình trạng: Còn hàng (${it.quantity})"
-                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#1976D2")) // Xanh dương
+                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#1976D2"))
                 } else {
                     binding.layoutInfo.tvStatus.text = "Tình trạng: Hết hàng"
-                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#D32F2F")) // Đỏ
+                    binding.layoutInfo.tvStatus.setTextColor(android.graphics.Color.parseColor("#D32F2F"))
                 }
 
-                // 3. Cập nhật Mô tả (layout_detail_description)
+
                 binding.layoutDescription.tvDescription.text = it.description
 
-                // Cập nhật Header thống kê Đánh giá
                 binding.layoutReviews.tvAvgRating.text = "⭐ ${it.averageRating}/5"
                 binding.layoutReviews.tvTotalReviews.text = "(${it.totalReviews} đánh giá)"
             }
@@ -153,13 +149,10 @@ class ProductDetailFragment : Fragment() {
     }
 
     private fun setupTopBar() {
-        // 1. Xử lý nút Back (Quay lại trang chủ)
         binding.layoutInfo.btnBack.setOnClickListener {
-            // Lệnh này giúp Fragment tự động lùi lại 1 trang giống như khi ấn nút Back trên điện thoại
             findNavController().popBackStack()
         }
 
-        // 2. Xử lý nút Giỏ hàng
         binding.layoutInfo.btnCart.setOnClickListener {
             val intent = android.content.Intent(requireContext(), com.example.dacs3.ui.cart.CartActivity::class.java)
             startActivity(intent)
@@ -187,16 +180,12 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            // Xóa dòng val productId = currentProductId đi
-            // Dùng trực tiếp biến quantity hiện tại
             val quantity = currentQuantity
 
-            // Hiển thị một Loading nhỏ (nếu cần)
             binding.btnAddToCart.isEnabled = false
 
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
-                    // Truyền thẳng biến productId (khai báo ở đầu class) vào API
                     val response = RetrofitClient.getInstance(requireContext()).addToCart(productId, quantity)
                     if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show()
@@ -213,15 +202,14 @@ class ProductDetailFragment : Fragment() {
 
         binding.btnBuyNow.setOnClickListener {
             val quantity = currentQuantity
-            binding.btnBuyNow.isEnabled = false // Khóa nút tạm thời tránh spam click
+            binding.btnBuyNow.isEnabled = false
 
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
-                    // 1. Gọi API thêm vào giỏ hàng
+
                     val response = RetrofitClient.getInstance(requireContext()).addToCart(productId, quantity)
 
                     if (response.isSuccessful) {
-                        // 2. Thêm thành công -> Chuyển thẳng sang trang Giỏ hàng luôn
                         val intent = android.content.Intent(requireContext(), com.example.dacs3.ui.cart.CartActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -239,7 +227,6 @@ class ProductDetailFragment : Fragment() {
     }
 
     private fun setupImageSlider(imageUrls: List<String>) {
-        // Giả sử ViewPager2 của bạn nằm trong layoutInfo có id là viewPagerProductImages
         val viewPager = binding.layoutInfo.viewPagerProductImages
         val adapter = ProductImageSliderAdapter(imageUrls)
         viewPager.adapter = adapter
@@ -258,7 +245,7 @@ class ProductDetailFragment : Fragment() {
         }
         viewPager.setPageTransformer(compositePageTransformer)
 
-        // Auto-scroll
+
         sliderRunnable = Runnable {
             val currentItem = viewPager.currentItem
             val totalItems = adapter.itemCount
@@ -270,15 +257,14 @@ class ProductDetailFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 sliderHandler.removeCallbacks(sliderRunnable)
-                sliderHandler.postDelayed(sliderRunnable, 3000) // Đổi ảnh sau 3s
+                sliderHandler.postDelayed(sliderRunnable, 3000)
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        // Khi mở Detail -> Ẩn Nav
-        // Thay "R.id.bottomNavigationView" bằng ID thật trong MainActivity của bạn
+
         requireActivity().findViewById<View>(R.id.bottomNavigation)?.visibility = View.GONE
 
         // Tiếp tục chạy slider ảnh nếu có
@@ -287,7 +273,6 @@ class ProductDetailFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        // Khi rời khỏi Detail (Back lại Home) -> Hiện Nav
         requireActivity().findViewById<View>(R.id.bottomNavigation)?.visibility = View.VISIBLE
 
         // Dừng slider ảnh
@@ -296,7 +281,7 @@ class ProductDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Dọn dẹp ViewBinding để chống tràn bộ nhớ
+        _binding = null
         sliderHandler.removeCallbacks(sliderRunnable)
     }
 

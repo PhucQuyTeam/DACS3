@@ -1,4 +1,4 @@
-package com.example.dacs3.ui.chat // Đổi lại package cho đúng thư mục của bạn
+package com.example.dacs3.ui.chat
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AIChatFragment : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentAIChatBinding? = null // Đã đổi thành FragmentAiChatBinding
+    private var _binding: FragmentAIChatBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: AIChatViewModel
@@ -34,7 +34,6 @@ class AIChatFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ÉP POPUP MỞ CAO LÊN 90% (Giống hệt Messenger)
         dialog?.setOnShowListener { dialogInterface ->
             val bottomSheetDialog = dialogInterface as BottomSheetDialog
             val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
@@ -49,12 +48,10 @@ class AIChatFragment : BottomSheetDialogFragment() {
                 it.requestLayout()
 
                 val behavior = BottomSheetBehavior.from(it)
-                // THỦ THUẬT: Set chiều cao lấp ló (peekHeight) bằng luôn chiều cao 90%
                 behavior.peekHeight = height
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
                 behavior.skipCollapsed = true
 
-                // Bắt buộc set background transparent ở đây để hiện được góc bo tròn trong XML
                 it.setBackgroundResource(android.R.color.transparent)
             }
         }
@@ -89,12 +86,10 @@ class AIChatFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupActions() {
-        // Nút X để tắt Popup Chat
         binding.btnClose.setOnClickListener {
             dismiss()
         }
 
-        // Nút Gửi tin nhắn
         binding.btnSend.setOnClickListener {
             val msg = binding.etMessageInput.text.toString().trim()
             if (msg.isNotEmpty()) {

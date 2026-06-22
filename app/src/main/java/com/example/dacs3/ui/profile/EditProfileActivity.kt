@@ -24,7 +24,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
     private var selectedImageUri: Uri? = null
 
-    // Mở thư viện chọn ảnh
+
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             selectedImageUri = uri
@@ -37,7 +37,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. NHẬN DỮ LIỆU CŨ HIỂN THỊ LÊN
+
         val oldName = intent.getStringExtra("EXTRA_NAME") ?: ""
         val oldPhone = intent.getStringExtra("EXTRA_PHONE") ?: ""
         val oldEmail = intent.getStringExtra("EXTRA_EMAIL") ?: ""
@@ -45,7 +45,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         binding.edtEditName.setText(oldName)
         binding.edtEditPhone.setText(oldPhone)
-        binding.edtEditEmail.setText(oldEmail) // Ô này bị khóa ở XML rồi
+        binding.edtEditEmail.setText(oldEmail)
 
         if (oldAvatar.isNotEmpty()) {
             val imageUrl = "http://10.0.2.2:8081/upload/$oldAvatar"
@@ -54,12 +54,12 @@ class EditProfileActivity : AppCompatActivity() {
                 .into(binding.imgEditAvatar)
         }
 
-        // 2. BẤM VÀO ẢNH ĐỂ ĐỔI
+
         binding.imgEditAvatar.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
 
-        // 3. BẤM LƯU
+
         binding.btnSaveProfile.setOnClickListener {
             val newName = binding.edtEditName.text.toString().trim()
             val newPhone = binding.edtEditPhone.text.toString().trim()
@@ -84,11 +84,11 @@ class EditProfileActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Đóng gói Text
+
                 val namePart = name.toRequestBody("text/plain".toMediaTypeOrNull())
                 val phonePart = phone.toRequestBody("text/plain".toMediaTypeOrNull())
 
-                // Đóng gói Ảnh
+
                 var imagePart: MultipartBody.Part? = null
                 if (selectedImageUri != null) {
                     val file = uriToFile(this@EditProfileActivity, selectedImageUri!!)
@@ -98,13 +98,13 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                // Gọi Server
+
                 val response = RetrofitClient.getInstance(this@EditProfileActivity).updateProfile(namePart, phonePart, imagePart)
 
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     if (body.success) {
-                        finish() // Đóng Activity, lùi về Fragment
+                        finish()
                     } else {
                         Toast.makeText(this@EditProfileActivity, body.message, Toast.LENGTH_SHORT).show()
                         resetBtn()
@@ -125,7 +125,6 @@ class EditProfileActivity : AppCompatActivity() {
         binding.btnSaveProfile.text = "Lưu thay đổi"
     }
 
-    // Hàm chuyển đổi Uri thành File vật lý
     private fun uriToFile(context: Context, uri: Uri): File? {
         try {
             val contentResolver = context.contentResolver

@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.dacs3.R
 import com.example.dacs3.model.OrderItemDTO
 import com.google.android.material.button.MaterialButton
+
+
 class OrderDetailAdapter(
     private val items: List<OrderItemDTO>,
     private val deliveryStatus: String,
@@ -37,7 +39,7 @@ class OrderDetailAdapter(
         holder.tvPrice.text = "${String.format("%,.0f", item.price)}đ"
         holder.tvQty.text = "x${item.quantity}"
 
-        // Xử lý link ảnh
+        // Xử lý link ảnh an toàn
         val imageUrl = if (!item.productImage.isNullOrEmpty()) {
             if (item.productImage.startsWith("http")) {
                 item.productImage.replace("localhost", "10.0.2.2")

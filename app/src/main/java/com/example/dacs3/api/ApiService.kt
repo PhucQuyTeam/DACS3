@@ -43,7 +43,7 @@ interface ApiService {
     @GET("user/profile")
     suspend fun getUserProfile(): Response<UserProfileDTO>
 
-    //xử lý api chi tiết sp
+
     @GET("home/products/{id}")
     suspend fun getProductDetail(@Path("id") productId: Int): Response<productDetailDTO>
     @GET("home/products/{id}/reviews")
@@ -67,23 +67,23 @@ interface ApiService {
         @Query("orderId") orderId: Int
     ): Response<List<OrderItemDTO>>
 
-    // API Thêm vào giỏ
+
     @POST("/cart/add")
     suspend fun addToCart(
         @Query("productId") productId: Int,
         @Query("quantity") quantity: Int
     ): Response<okhttp3.ResponseBody>
 
-    // API Xem giỏ hàng
+
     @GET("/cart/my-cart")
     suspend fun getMyCart(): Response<List<CartItemDTO>>
 
     @DELETE("/cart/remove/{cartId}")
     suspend fun removeCartItem(@Path("cartId") cartId: Int): retrofit2.Response<okhttp3.ResponseBody>
-    // API Lấy danh sách địa chỉ
+
     @GET("/api/user/address/my-addresses")
     suspend fun getMyAddresses(): retrofit2.Response<List<com.example.dacs3.model.AddressDTO>>
-    // API Thêm địa chỉ mới
+
 
     @GET("/api/user/address/provinces")
     suspend fun getProvinces(): retrofit2.Response<List<ProvinceDTO>>
@@ -93,7 +93,7 @@ interface ApiService {
     @POST("/api/user/address/add")
     suspend fun addAddress(@Body request: HashMap<String, Any>): retrofit2.Response<okhttp3.ResponseBody>
 
-    // API Cập nhật địa chỉ
+
     @PUT("/api/user/address/update")
     suspend fun updateAddress(@Body request: HashMap<String, Any>): retrofit2.Response<okhttp3.ResponseBody>
 
@@ -107,7 +107,7 @@ interface ApiService {
         @Query("quantity") quantity: Int
     ): retrofit2.Response<okhttp3.ResponseBody>
 
-    @POST("/api/order/create") // Chú ý sửa lại đường dẫn này cho khớp với Controller của sếp
+    @POST("/api/order/create")
     suspend fun placeOrder(@Body request: com.example.dacs3.model.OrderRequest): retrofit2.Response<okhttp3.ResponseBody>
 
     @POST("/api/order/create-zalopay")
@@ -130,21 +130,21 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: HashMap<String, String>
     ): retrofit2.Response<okhttp3.ResponseBody>
-    // API Chat
+
     @GET("/api/chat/history")
     suspend fun getChatHistory(@Query("adminId") adminId: Int): Response<List<ChatDTO>>
 
     @POST("/api/chat/send")
     suspend fun sendMessage(@Body request: HashMap<String, Any>): Response<ChatDTO>
 
-    @GET("/api/chat/unread-count") // Backend cần viết thêm 1 API đếm tin chưa đọc
+    @GET("/api/chat/unread-count")
     suspend fun getUnreadMessageCount(): Response<Int>
 
     @PUT("/api/chat/mark-read")
     suspend fun markChatAsRead(@Query("adminId") adminId: Int): retrofit2.Response<okhttp3.ResponseBody>
 
     @Multipart
-    @POST("/api/chat/upload-image")
+    @POST("/api/chat/upload-image") // Backend cần viết API này
     suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
 
 
@@ -155,10 +155,10 @@ interface ApiService {
         @Part("orderId") orderId: okhttp3.RequestBody,
         @Part("rating") rating: okhttp3.RequestBody,
         @Part("comment") comment: okhttp3.RequestBody,
-        @Part image: okhttp3.MultipartBody.Part? // Ảnh có thể null
+        @Part image: okhttp3.MultipartBody.Part?
     ): retrofit2.Response<okhttp3.ResponseBody>
 
-    // API Lấy danh sách Blog
+
     @GET("/api/blogs")
     suspend fun getAllBlogs(): retrofit2.Response<List<BlogDTO>>
 
