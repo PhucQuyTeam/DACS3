@@ -23,14 +23,11 @@ class OrderHistoryActivity : AppCompatActivity() {
             finish()
         }
 
-        // Nhận yêu cầu mở Tab nào từ màn hình trước (ví dụ: ProfileFragment)
         val targetTab = intent.getIntExtra("TARGET_TAB", 0)
 
-        // Cài đặt ViewPager2 với Adapter
         val pagerAdapter = OrderPagerAdapter(this)
         binding.viewPagerOrders.adapter = pagerAdapter
 
-        // Nối TabLayout và ViewPager2 (0: Chờ xác nhận, 1: Đang giao, 2: Hoàn thành)
         TabLayoutMediator(binding.tabLayoutOrders, binding.viewPagerOrders) { tab, position ->
             tab.text = when (position) {
                 0 -> "Chờ xác nhận"
@@ -40,7 +37,6 @@ class OrderHistoryActivity : AppCompatActivity() {
             }
         }.attach()
 
-        // Tự động cuộn sang đúng Tab cần xem
         binding.viewPagerOrders.setCurrentItem(targetTab, false)
     }
 }

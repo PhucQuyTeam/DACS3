@@ -36,11 +36,6 @@ class SplashActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
 
-        // =========================================================
-        // 1. HIỆU ỨNG GIAO DIỆN KIỂU DUOLINGO
-        // =========================================================
-
-        // Hiệu ứng nảy (Bounce) cho cụm Logo
         binding.llMascot.scaleX = 0f
         binding.llMascot.scaleY = 0f
         binding.llMascot.animate()
@@ -64,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
                 binding.tvLoadingText.text = funnyMessages[msgIndex]
                 msgIndex++
                 if (msgIndex < funnyMessages.size) {
-                    handler.postDelayed(this, 700) // 0.7s đổi chữ 1 lần
+                    handler.postDelayed(this, 700)
                 }
             }
         }
@@ -79,11 +74,8 @@ class SplashActivity : AppCompatActivity() {
         animator.start()
 
 
-        // =========================================================
-        // 2. CHẠY NGẦM XỬ LÝ TOKEN VÀ ĐIỀU HƯỚNG
-        // =========================================================
+
         lifecycleScope.launch(Dispatchers.IO) {
-            // Tăng thời gian đợi lên 3 giây để khách xem hết hiệu ứng UI
             delay(4000)
             checkAndNavigate()
         }
@@ -98,7 +90,7 @@ class SplashActivity : AppCompatActivity() {
             return
         }
 
-        // KIỂM TRA HẠN SỬ DỤNG VÉ
+
         if (isTokenExpiringSoon(accessToken)) {
             Log.d("Splash", "Vé cũ đã hết hạn! Xin vé mới ngay tại cổng...")
             val isRefreshSuccess = refreshAccessTokenSync(refreshToken)

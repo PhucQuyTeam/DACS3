@@ -35,7 +35,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    //  auto-scroll
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -53,14 +52,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Đẩy lề cho TopBar để tránh thanh trạng thái
-//        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTopBar) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(0, systemBars.top, 0, 0)
-//            insets
-//        }
-
 
         setupBanner()
         setupRecyclerView()
@@ -83,12 +74,6 @@ class HomeFragment : Fragment() {
         val adapter = BannerAdapter(images)
         binding.viewPagerBanner.adapter = adapter
 
-        // Kết nối ViewPager2 với TabLayout (các dấu chấm)
-//        TabLayoutMediator(binding.tabLayoutIndicator, binding.viewPagerBanner) { _, _ ->
-//            // Không cần set text cho tab vì chỉ hiện dấu chấm
-//        }.attach()
-
-        // Thêm hiệu ứng trượt mượt mà
         binding.viewPagerBanner.clipToPadding = false
         binding.viewPagerBanner.clipChildren = false
         binding.viewPagerBanner.offscreenPageLimit = 3
@@ -102,37 +87,31 @@ class HomeFragment : Fragment() {
         }
         binding.viewPagerBanner.setPageTransformer(compositePageTransformer)
 
-        // Cài đặt Auto-scroll
         sliderRunnable = Runnable {
             val currentItem = binding.viewPagerBanner.currentItem
             val totalItems = adapter.itemCount
 
             if (currentItem == totalItems - 1) {
-                // Nếu đến ảnh cuối, quay lại ảnh đầu tiên
                 binding.viewPagerBanner.currentItem = 0
             } else {
-                // Chuyển sang ảnh tiếp theo
                 binding.viewPagerBanner.currentItem = currentItem + 1
             }
         }
 
-        // Lắng nghe sự kiện người dùng tương tác để tạm dừng/tiếp tục trượt
         binding.viewPagerBanner.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 sliderHandler.removeCallbacks(sliderRunnable)
-                sliderHandler.postDelayed(sliderRunnable, 4000) // Trượt sau 3 giây
+                sliderHandler.postDelayed(sliderRunnable, 4000)
             }
         })
     }
 
-    // Tạm dừng trượt khi Fragment bị ẩn đi để tiết kiệm tài nguyên
     override fun onPause() {
         super.onPause()
         sliderHandler.removeCallbacks(sliderRunnable)
     }
 
-    // Tiếp tục trượt khi Fragment hiện lại
     override fun onResume() {
         super.onResume()
         sliderHandler.postDelayed(sliderRunnable, 4000)
@@ -140,7 +119,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // 3. DO DÙNG _binding (có dấu ? cho phép null) NÊN GÁN = NULL THOẢI MÁI
         _binding = null
     }
 
@@ -153,21 +131,16 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_home_to_productDetailFragment, bundle)
         }
         binding.rvAllProducts.adapter = productAdapter
-        // LayoutManager đã được set là GridLayoutManager trong file XML của bạn rồi
     }
 
     private fun setupViewModel() {
-        // 1. Khởi tạo API, Repository, Factory
         val apiService = RetrofitClient.getInstance(requireContext())
         val repository = ProductRepository(apiService)
         val factory = HomeViewModelFactory(repository)
 
-            // 2. Lấy instance của ViewModel
         homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-        // 3. Lắng nghe dữ liệu thay đổi
         homeViewModel.products.observe(viewLifecycleOwner) { productList ->
-            // Khi có dữ liệu từ mạng tải về, đẩy vào Adapter
             productAdapter.submitList(productList)
         }
 
@@ -175,11 +148,9 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
         }
 
-        // 4. Gọi hàm fetch data từ Server
         homeViewModel.fetchProducts()
-        homeViewModel.fetchUnreadCount() // BỔ SUNG DÒNG NÀY VÀO ĐÂY LÀ XONG!
+        homeViewModel.fetchUnreadCount()
 
-        // Lắng nghe và vẽ huy hiệu (Bạn đã viết sẵn rồi, giữ nguyên)
         homeViewModel.unreadCount.observe(viewLifecycleOwner) { count ->
             if (count > 0) {
                 binding.tvUnreadBadge.visibility = View.VISIBLE
@@ -217,49 +188,43 @@ class HomeFragment : Fragment() {
 
     }
 
-    // --- XỬ LÝ TÌM KIẾM ---
     private fun setupSearch() {
-        // 1. Khi ấn icon Kính lúp -> Hiện ô tìm kiếm, tự động nháy nháy con trỏ và bật bàn phím
         binding.ivSearch.setOnClickListener {
             binding.layoutSearchBar.visibility = View.VISIBLE
             binding.etSearch.requestFocus()
             showKeyboard(binding.etSearch)
         }
 
-        // 2. Khi ấn nút Mũi tên quay lại trên thanh tìm kiếm -> Ẩn đi, tắt bàn phím
+
         binding.ivCloseSearch.setOnClickListener {
             binding.layoutSearchBar.visibility = View.GONE
             binding.etSearch.text.clear()
             hideKeyboard(binding.etSearch)
         }
 
-        // 3. Bắt sự kiện khi người dùng ấn nút "Kính lúp / Enter" trên BÀN PHÍM ẢO
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = binding.etSearch.text.toString().trim()
 
                 if (query.isNotEmpty()) {
-                    // Tắt bàn phím
                     hideKeyboard(binding.etSearch)
 
-                    // Ẩn thanh tìm kiếm ở trang chủ đi (để lỡ người dùng ấn nút Back từ trang Search về thì trang chủ nhìn vẫn gọn gàng)
                     binding.layoutSearchBar.visibility = View.GONE
                     binding.etSearch.text.clear()
 
-                    // Gói chữ người dùng vừa nhập và chuyển sang SearchFragment
+
                     val bundle = Bundle().apply {
                         putString("SEARCH_QUERY", query)
                     }
                     findNavController().navigate(R.id.action_nav_home_to_searchFragment, bundle)
                 }
-                true // Trả về true báo hiệu là đã xử lý xong sự kiện này
+                true
             } else {
                 false
             }
         }
     }
 
-    // --- 2 Hàm tiện ích bật/tắt bàn phím ---
     private fun showKeyboard(view: View) {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
@@ -279,43 +244,39 @@ class HomeFragment : Fragment() {
 
         binding.fabAIChat.setOnTouchListener { view, event ->
             when (event.actionMasked) {
-                // 1. KHI NGƯỜI DÙNG VỪA CHẠM NGÓN TAY VÀO NÚT
+
                 MotionEvent.ACTION_DOWN -> {
                     dX = view.x - event.rawX
                     dY = view.y - event.rawY
                     initialTouchX = event.rawX
                     initialTouchY = event.rawY
-                    true // Báo cho Android biết là mình đã ghi nhận cú chạm
+                    true
                 }
 
-                // 2. KHI NGƯỜI DÙNG DI CHUYỂN NGÓN TAY (KÉO LÊ)
                 MotionEvent.ACTION_MOVE -> {
                     val newX = event.rawX + dX
                     val newY = event.rawY + dY
 
-                    // Lấy kích thước màn hình (parent) để chặn không cho nút bay ra ngoài rìa
                     val parent = view.parent as View
                     val maxX = parent.width - view.width.toFloat()
                     val maxY = parent.height - view.height.toFloat()
 
-                    // Cập nhật tọa độ mới cho nút (Dùng coerceIn để ép tọa độ nằm trong màn hình)
+
                     view.animate()
                         .x(newX.coerceIn(0f, maxX))
                         .y(newY.coerceIn(0f, maxY))
-                        .setDuration(0) // Di chuyển tức thời không có độ trễ
+                        .setDuration(0)
                         .start()
                     true
                 }
 
-                // 3. KHI NGƯỜI DÙNG NHẤC NGÓN TAY LÊN
+
                 MotionEvent.ACTION_UP -> {
-                    // Tính toán xem người dùng vừa KÉO hay chỉ CLICK nhẹ
                     val diffX = Math.abs(event.rawX - initialTouchX)
                     val diffY = Math.abs(event.rawY - initialTouchY)
 
-                    // Nếu ngón tay di chuyển dưới 10 pixel -> Coi như là một cú Click
+
                     if (diffX < 10 && diffY < 10) {
-                        // MỞ MÀN HÌNH CHAT AI
                         findNavController().navigate(R.id.action_nav_home_to_AIChatFragment)
                     }
                     true

@@ -12,7 +12,6 @@ import java.util.Locale
 
 class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productList = listOf<ProductHomeDTO>()
-
     private val BASE_IMAGE_URL = "http://10.0.2.2:8081/upload/"
 
     fun submitList(list: List<ProductHomeDTO>) {
@@ -24,7 +23,6 @@ class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.A
         fun bind(product: ProductHomeDTO) {
             binding.tvProductName.text = product.name
 
-            // Format giá tiền thành VND (Ví dụ: 100,000 đ)
             val format = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
             binding.tvProductPrice.text = format.format(product.price)
 
@@ -39,11 +37,10 @@ class ProductHomeAdapter(private val onItemClick: (Int) -> Unit): RecyclerView.A
 
             val fullImageUrl = BASE_IMAGE_URL + imageName
 
-            // Xử lý load ảnh bằng Glide.
             Glide.with(binding.root.context)
                 .load(fullImageUrl)
-                .placeholder(R.drawable.logoaquariumshop1) // Ảnh hiển thị khi đang load
-                .error(R.drawable.logoaquariumshop1)       // Ảnh hiển thị khi lỗi
+                .placeholder(R.drawable.logoaquariumshop1)
+                .error(R.drawable.logoaquariumshop1)
                 .into(binding.ivProductImage)
 
             binding.root.setOnClickListener {

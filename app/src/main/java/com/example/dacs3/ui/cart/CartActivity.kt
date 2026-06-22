@@ -85,13 +85,12 @@ class CartActivity : AppCompatActivity() {
     private fun updateCartQuantityAPI(cartId: Int, newQty: Int) {
         lifecycleScope.launch {
             try {
-                // Gọi API thật lên Spring Boot
+
                 val response = RetrofitClient.getInstance(this@CartActivity).updateCartQuantity(cartId, newQty)
 
                 if (!response.isSuccessful) {
                     Toast.makeText(this@CartActivity, "Lỗi đồng bộ số lượng với máy chủ", Toast.LENGTH_SHORT).show()
                 }
-                // Nếu thành công thì âm thầm cập nhật dưới DB, không cần báo Toast để đỡ phiền người dùng
 
             } catch (e: Exception) {
                 Toast.makeText(this@CartActivity, "Lỗi mạng khi cập nhật số lượng", Toast.LENGTH_SHORT).show()
@@ -100,21 +99,32 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun deleteCartItem(item: CartItemDTO, position: Int) {
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.getInstance(this@CartActivity).removeCartItem(item.cartId)
-                if (response.isSuccessful) {
-                    cartList.removeAt(position)
-                    cartAdapter.notifyItemRemoved(position)
-                    cartAdapter.notifyItemRangeChanged(position, cartList.size)
-                    calculateTotal()
-                    checkIfAllSelected()
-                    Toast.makeText(this@CartActivity, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show()
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Xác nhận")
+            .setMessage("Bạn có muốn xoá sản phẩm này không?")
+            .setPositiveButton("Xoá") { _, _ ->
+                lifecycleScope.launch {
+                    try {
+                        val response = RetrofitClient
+                            .getInstance(this@CartActivity)
+                            .removeCartItem(item.cartId)
+
+                        if (response.isSuccessful) {
+                            cartList.removeAt(position)
+                            cartAdapter.notifyItemRemoved(position)
+                            cartAdapter.notifyItemRangeChanged(position, cartList.size)
+                            calculateTotal()
+                            checkIfAllSelected()
+                            Toast.makeText(this@CartActivity, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show()
+                        }
+
+                    } catch (e: Exception) {
+                        Toast.makeText(this@CartActivity, "Lỗi mạng!", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this@CartActivity, "Lỗi mạng!", Toast.LENGTH_SHORT).show()
             }
-        }
+            .setNegativeButton("Huỷ", null)
+            .show()
     }
 
     private fun calculateTotal() {

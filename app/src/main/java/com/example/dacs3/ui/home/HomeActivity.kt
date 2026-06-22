@@ -35,23 +35,16 @@ class HomeActivity : AppCompatActivity() {
 
         navController = navHostFragment.navController
 
-//        binding.bottomNavigationView.setupWithNavController(navController)
 
-        // 2. CẤU HÌNH THANH ĐIỀU HƯỚNG NAFIS
-        // ==========================================
         val bottomNav = binding.bottomNavigation
 
-        // Thêm các nút bấm (Tab) vào thanh bottom
-        // Số 1, 2, 3, 4 là ID của nút. Kế bên là Icon svg tương ứng của bạn.
         bottomNav.add(NafisBottomNavigation.Model(1, R.drawable.ic_home))
         bottomNav.add(NafisBottomNavigation.Model(2, R.drawable.ic_blog))
         bottomNav.add(NafisBottomNavigation.Model(3, R.drawable.ic_notifications))
         bottomNav.add(NafisBottomNavigation.Model(4, R.drawable.ic_profile))
 
-        // Mặc định khi vừa mở app lên sẽ chọn sẵn Tab Home (ID số 1)
         bottomNav.show(1)
 
-        // Xử lý hiệu ứng: Bấm vào nút nào thì gọi lệnh chuyển tới Fragment đó
         bottomNav.setOnClickMenuListener { model ->
             when (model.id) {
                 1 -> navController.navigate(R.id.nav_home)
@@ -61,21 +54,16 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // THÊM ĐOẠN NÀY ĐỂ TỐI ƯU ẨN/HIỆN BOTTOM NAV
+        // ẩn khi vào trang chi tiết
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            // Kiểm tra: Nếu đích đến là trang Chi tiết sản phẩm (hoặc các trang con khác) -> Ẩn Nav đi
-            // Lưu ý: R.id.productDetailFragment là ID của fragment chi tiết khai báo trong file nav_thuysinh.xml
             if (destination.id == R.id.productDetailFragment) {
                 binding.bottomNavigation.visibility = View.GONE
             } else {
-                // Nếu ở màn Home, Profile, Blog... -> Hiện Nav lên
                 binding.bottomNavigation.visibility = View.VISIBLE
             }
         }
 
-        // (Tùy chọn) Chặn sự kiện click đúp: Nếu đang ở tab Home mà bấm Home thêm lần nữa thì không làm gì cả
         bottomNav.setOnReselectListener {
-            // Để trống để tránh app load lại trang hiện tại
         }
     }
 

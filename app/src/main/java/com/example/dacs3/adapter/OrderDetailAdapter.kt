@@ -12,7 +12,7 @@ import com.example.dacs3.R
 import com.example.dacs3.model.OrderItemDTO
 import com.google.android.material.button.MaterialButton
 
-// ĐÃ SỬA: Đổi từ (Int) -> Unit thành (Int, Int) -> Unit
+
 class OrderDetailAdapter(
     private val items: List<OrderItemDTO>,
     private val deliveryStatus: String,

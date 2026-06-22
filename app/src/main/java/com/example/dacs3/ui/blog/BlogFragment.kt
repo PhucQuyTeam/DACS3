@@ -32,9 +32,8 @@ class BlogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Khởi tạo Adapter
         blogAdapter = BlogAdapter { selectedBlog ->
-            // Khi click vào bài viết, gói nguyên cục BlogDTO gửi sang trang Chi tiết
+
             val bundle = Bundle().apply {
                 putSerializable("BLOG_DATA", selectedBlog)
             }
@@ -46,20 +45,19 @@ class BlogFragment : Fragment() {
             adapter = blogAdapter
         }
 
-        // 2. Khởi tạo ViewModel
+
         val apiService = RetrofitClient.getInstance(requireContext())
         val repository = BlogRepository(apiService)
         viewModel = ViewModelProvider(this, BlogViewModelFactory(repository))[BlogViewModel::class.java]
 
-        // 3. Lắng nghe dữ liệu
+
         viewModel.blogs.observe(viewLifecycleOwner) { listBlogs ->
             blogAdapter.submitList(listBlogs)
         }
 
-        // 4. Bắt đầu gọi API
+
         viewModel.fetchBlogs()
 
-        // 5. Nút Back
         binding.btnBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }

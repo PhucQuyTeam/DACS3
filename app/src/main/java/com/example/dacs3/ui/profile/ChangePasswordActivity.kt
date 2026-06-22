@@ -61,9 +61,9 @@ class ChangePasswordActivity : AppCompatActivity() {
 
                     if (response.isSuccessful) {
                         Toast.makeText(this@ChangePasswordActivity, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show()
-                        finish() // Đổi thành công thì đóng màn hình này lại
+                        finish()
                     } else {
-                        // Backend trả về mã lỗi 400 (Pass cũ sai chẳng hạn)
+
                         val errorMsg = response.errorBody()?.string() ?: "Đổi mật khẩu thất bại"
                         Toast.makeText(this@ChangePasswordActivity, errorMsg, Toast.LENGTH_SHORT).show()
                     }

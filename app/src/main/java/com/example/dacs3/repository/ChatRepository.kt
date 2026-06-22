@@ -25,7 +25,6 @@ class ChatRepository(private val apiService: ApiService,private val tokenManager
         payload["messageType"] = type
 
         return apiService.sendMessage(payload)
-
     }
 
     @SuppressLint("CheckResult")
@@ -35,7 +34,6 @@ class ChatRepository(private val apiService: ApiService,private val tokenManager
 
         val headers = arrayListOf<StompHeader>()
 
-        // GIẢI PHÁP TỐI ƯU: Lấy Token MỚI NHẤT ngay tại giây phút kết nối
         val freshToken = tokenManager.getAccessToken()
         if (freshToken != null) {
             headers.add(StompHeader("Authorization", "Bearer $freshToken"))
@@ -50,7 +48,7 @@ class ChatRepository(private val apiService: ApiService,private val tokenManager
                 }
                 ua.naiksoftware.stomp.dto.LifecycleEvent.Type.ERROR -> {
                     Log.e("STOMP", "Lỗi WebSocket: ${lifecycleEvent.exception}")
-                    // Tùy chọn: Nếu lỗi do Token, có thể xử lý kết nối lại ở đây
+                    // Nếu lỗi do Token, có thể xử lý kết nối lại ở đây
                 }
                 ua.naiksoftware.stomp.dto.LifecycleEvent.Type.CLOSED -> {
                     Log.d("STOMP", "WebSocket đã đóng.")
@@ -59,7 +57,6 @@ class ChatRepository(private val apiService: ApiService,private val tokenManager
             }
         }
 
-        // 4. LẮNG NGHE KÊNH CHAT RIÊNG
         val topic = "/topic/chat/${myUserId}_${adminId}"
         stompClient?.topic(topic)?.subscribe({ topicMessage ->
             val newMsg = Gson().fromJson(topicMessage.payload, ChatDTO::class.java)
@@ -75,7 +72,6 @@ class ChatRepository(private val apiService: ApiService,private val tokenManager
 
     suspend fun markAsRead(adminId: Int) = apiService.markChatAsRead(adminId)
 
-    // Hàm gọi API Upload ảnh
     suspend fun uploadChatImage(imagePart: okhttp3.MultipartBody.Part): retrofit2.Response<com.example.dacs3.model.BaseResponse> {
         return apiService.uploadChatImage(imagePart)
     }

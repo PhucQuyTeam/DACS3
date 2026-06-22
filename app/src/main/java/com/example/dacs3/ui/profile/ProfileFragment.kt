@@ -40,31 +40,29 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Khởi tạo TokenManager
+
         tokenManager = TokenManager(requireContext())
 
-        // 1. GÁN SỰ KIỆN CHO CÁC NÚT BẤM (Ưu tiên nút Đăng xuất trước)
+
         setupListeners()
 
-        // 2. GỌI API LẤY THÔNG TIN NGƯỜI DÙNG
+
         loadUserProfile()
     }override fun onResume() {
         super.onResume()
-        // Mỗi khi đóng màn hình Edit, Fragment này hiện lên lại -> Nó sẽ tự gọi lại API để kéo dữ liệu mới nhất
+
         loadUserProfile()
     }
 
 
     private fun setupListeners() {
-        // --- NÚT ĐĂNG XUẤT (Cứu cánh khỏi lỗi 403) ---
+
         binding.btnLogout.setOnClickListener {
-            // 1. Xóa sạch Token trong điện thoại
+
             tokenManager.clearTokens()
 
-            // 2. Chuyển về trang Đăng nhập
             val intent = Intent(requireActivity(), LoginActivity::class.java)
-            // Lệnh này cực kỳ quan trọng: Xóa sạch lịch sử các trang trước đó,
-            // để người dùng không thể bấm phím Back quay lại app được nữa.
+
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
@@ -132,13 +130,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserProfile() {
-        // Hiện Tên mặc định hoặc loading trong lúc chờ API
+
         binding.tvUserName.text = "Đang tải..."
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // Gọi API từ Retrofit (Đã tự động đính kèm Token trong Header)
-                // Lưu ý: Đổi .getUserProfile() thành tên hàm thực tế trong ApiService của bạn
+
                 val response = RetrofitClient.getInstance(requireContext()).getUserProfile()
 
                 if (response.isSuccessful && response.body() != null) {
@@ -146,23 +143,21 @@ class ProfileFragment : Fragment() {
 
                     currentUser = userProfile
 
-                    // 1. Đổ dữ liệu Tên
                     binding.tvUserName.text = userProfile.name ?: "Chưa cập nhật tên"
 
-                    // 2. Xử lý Avatar bo tròn bằng thư viện Glide
+
                     if (!userProfile.avatar.isNullOrEmpty()) {
-                        // Nối URL gốc của backend với tên file ảnh trong DB
-                        // VD: http://10.0.2.2:8081/uploads/1764724253_betta_hm_12.jpg
+
                         val imageUrl = "http://10.0.2.2:8081/upload/${userProfile.avatar}"
 
                         Glide.with(requireContext())
                             .load(imageUrl)
-                            .circleCrop() // LỆNH NÀY SẼ ÉP ẢNH PHẢI CẮT TRÒN XOE 100%
+                            .circleCrop()
                             .placeholder(R.drawable.logoaquariumshop1)
                             .error(R.drawable.logoaquariumshop1)
                             .into(binding.imgAvatar)
                     } else {
-                        // Nếu DB trả về null, load ảnh mặc định và bo tròn
+
                         Glide.with(requireContext())
                             .load(R.drawable.logoaquariumshop1)
                             .circleCrop()
@@ -176,7 +171,6 @@ class ProfileFragment : Fragment() {
                         binding.tvPendingCount.visibility = View.GONE
                     }
 
-                    // Đang giao
                     val shipping = userProfile.shippingCount ?: 0
                     if (shipping > 0) {
                         binding.tvShippingCount.text = shipping.toString()
@@ -209,7 +203,6 @@ class ProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Tránh rò rỉ bộ nhớ (Memory Leak)
         _binding = null
     }
 }

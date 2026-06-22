@@ -20,18 +20,17 @@ object RetrofitClient {
 
     private var apiService: ApiService? = null
 
-    // Biến khóa để chống kẹt mạng khi nhiều API cùng bị 403 một lúc
     private val lock = Any()
 
     fun getInstance(context: Context): ApiService {
         if (apiService == null) {
             val tokenManager = TokenManager(context.applicationContext)
 
-            // INTERCEPTOR CHUẨN: BẮT 401/403 VÀ GỌI LẠI REQUEST
+
             val authInterceptor = Interceptor { chain ->
                 var request = chain.request()
 
-                // 1. Lấy token hiện tại và gắn vào header
+
                 val token = tokenManager.getAccessToken()
                 if (token != null) {
                     request = request.newBuilder()
@@ -39,26 +38,25 @@ object RetrofitClient {
                         .build()
                 }
 
-                // 2. Gửi request lên Server
+
                 var response = chain.proceed(request)
 
-                // 3. NẾU SERVER BÁO LỖI 401/403 (Token hết hạn/sai)
                 if (response.code == 401 || response.code == 403) {
-                    Log.d("RetrofitClient", "⚠️ Bị 403/401! Bắt đầu refresh token ngầm...")
+                    Log.d("RetrofitClient", "⚠Bị 403/401! Bắt đầu refresh token ngầm...")
 
                     synchronized(lock) {
-                        // Kiểm tra xem có luồng nào khác đã xin token mới hộ chưa
+
                         val currentToken = tokenManager.getAccessToken()
                         if (currentToken != null && currentToken != token) {
-                            // Đã có vé mới -> Gọi lại ngay với vé mới
+
                             val newRequest = chain.request().newBuilder()
                                 .header("Authorization", "Bearer $currentToken")
                                 .build()
-                            response.close() // Đóng response lỗi cũ
+                            response.close()
                             return@Interceptor chain.proceed(newRequest)
                         }
 
-                        // Tự đi xin vé mới
+
                         val refreshToken = tokenManager.getRefreshToken()
                         if (refreshToken != null) {
                             val newToken = refreshAccessTokenNgam(refreshToken)
@@ -67,15 +65,15 @@ object RetrofitClient {
                                 Log.d("RetrofitClient", "✅ Lấy vé mới thành công! Gửi lại Request cũ...")
                                 tokenManager.saveTokens(newToken, refreshToken)
 
-                                // Gắn token vừa xin vào request cũ
+
                                 val newRequest = chain.request().newBuilder()
                                     .header("Authorization", "Bearer $newToken")
                                     .build()
 
                                 response.close() // Đóng cái response 403 đi
-                                response = chain.proceed(newRequest) // GỌI LẠI API BỊ LỖI
+                                response = chain.proceed(newRequest)
                             } else {
-                                Log.e("RetrofitClient", "❌ Thẻ VIP đã chết! Đăng xuất User.")
+                                Log.e("RetrofitClient", " Thẻ VIP đã chết! Đăng xuất User.")
                                 tokenManager.clearTokens()
                             }
                         } else {
@@ -126,7 +124,6 @@ object RetrofitClient {
                 val responseString = response.body?.string()
                 if (responseString != null) {
                     val jsonObject = JSONObject(responseString)
-                    // Nhớ check success = true để tránh lỗi rỗng
                     if (jsonObject.optBoolean("success", false)) {
                         val newToken = jsonObject.optString("accessToken", jsonObject.optString("token"))
                         if (newToken.isNotEmpty()) {
