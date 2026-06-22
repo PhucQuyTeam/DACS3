@@ -18,7 +18,6 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
 
     private var originnalProductList = listOf<ProductHomeDTO>()
 
-    // 1. THÊM BIẾN LƯU SỐ LƯỢNG TIN NHẮN CHƯA ĐỌC
     private val _unreadCount = MutableLiveData<Int>()
     val unreadCount: LiveData<Int> get() = _unreadCount
 
@@ -56,7 +55,7 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
     }
 
     fun searchProducts(query: String) {
-        currentSearchQuery = query // Nhớ lại từ khóa người dùng gõ
+        currentSearchQuery = query
 
         if (query.isBlank()) {
             _products.value = originnalProductList
@@ -80,18 +79,16 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
     private fun executeFiltering() {
         var filteredList = originnalProductList
 
-        // 1. Lọc theo chữ (Tên)
         if (currentSearchQuery.isNotBlank()) {
             filteredList = filteredList.filter { it.name.contains(currentSearchQuery, ignoreCase = true) }
         }
 
-        // 2. Lọc theo Sao
+
         filteredList = filteredList.filter { it.averageRating in minRating..maxRating }
 
-        // 3. Lọc theo Giá
         filteredList = filteredList.filter { it.price in minPrice..maxPrice }
 
-        // Đẩy ra UI
+
         _products.postValue(filteredList)
     }
 
@@ -106,7 +103,6 @@ class HomeViewModel (private val repository: ProductRepository) : ViewModel() {
                     _unreadCount.postValue(0)
                 }
             } catch (e: Exception) {
-                // Nếu rớt mạng thì mặc định ẩn số đếm (gán = 0)
                 _unreadCount.postValue(0)
             }
         }

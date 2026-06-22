@@ -28,20 +28,18 @@ class blogDetailFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Bóc gói hàng BlogDTO từ Bundle
         val blog = arguments?.getSerializable("BLOG_DATA") as? BlogDTO
 
         if (blog != null) {
-            // Đổ dữ liệu lên giao diện
             binding.tvDetailCategory.text = blog.categoryName ?: "CHƯA PHÂN LOẠI"
             binding.tvDetailTitle.text = blog.title
             binding.tvDetailDescription.text = blog.description
             binding.tvDetailContent.text = blog.content
 
-            // Xử lý ngày tháng tạm thời lấy luôn chuỗi (hoặc bạn có thể copy hàm formatDate sang đây)
+
             binding.tvDetailDate.text = "Ngày đăng: ${blog.createdAt?.substringBefore("T")}"
 
-            // Load ảnh header
+
             var imageName = blog.image ?: ""
             if (imageName.startsWith("upload/")) imageName = imageName.replaceFirst("upload/", "")
 

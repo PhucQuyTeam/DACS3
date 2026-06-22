@@ -152,18 +152,17 @@ class CheckoutActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        // MỞ KÉT SẮT XEM CÓ MÃ GIAO DỊCH NÀO ĐANG CHỜ KHÔNG
+
         val prefs = getSharedPreferences("ZaloPayPrefs", Context.MODE_PRIVATE)
         val savedTransId = prefs.getString("pending_trans_id", null)
 
         if (savedTransId != null) {
-            // Lấy lại địa chỉ phòng khi App bị sập quên mất
+
             val savedAddressId = prefs.getInt("saved_address_id", -1)
             if (currentAddressId == -1) {
                 currentAddressId = savedAddressId
             }
 
-            // Xóa ngay mã trong két sắt để khỏi bị lặp lại
             prefs.edit().clear().apply()
 
             checkPaymentStatus(savedTransId)

@@ -34,7 +34,6 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
     fun sendTextMessage(adminId: Int, message: String) {
         viewModelScope.launch {
             try {
-//                repository.sendMessage(adminId, message)
                 val response = repository.sendMessage(adminId, message)
                 if (response.isSuccessful && response.body() != null) {
                     // Khi server báo lưu thành công, đẩy tin nhắn đó ra cho Fragment
@@ -60,7 +59,7 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 // 1. Gọi API Upload ảnh lên server
-                val response = repository.uploadChatImage(imagePart) // Bạn nhớ thêm hàm uploadChatImage vào ChatRepository nhé
+                val response = repository.uploadChatImage(imagePart)
 
                 if (response.isSuccessful && response.body() != null) {
                     val baseResponse = response.body()!!
@@ -68,7 +67,6 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
                         // 2. Upload thành công! Lấy tên file do Backend trả về
                         val fileName = baseResponse.message
 
-                        // 3. Gọi hàm sendTextMessage nhưng với Type là "image"
                         val chatResponse = repository.sendMessage(adminId, fileName, "image")
                         if (chatResponse.isSuccessful && chatResponse.body() != null) {
                             sentMessageResult.postValue(chatResponse.body())

@@ -22,10 +22,8 @@ class BlogAdapter(private val onItemClick: (BlogDTO) -> Unit) :
             binding.tvBlogTitle.text = blog.title
             binding.tvBlogCategory.text = blog.categoryName ?: "Chưa phân loại"
 
-            // Xử lý cắt chuỗi ngày tháng cho đẹp (Từ 2026-05-10T... -> 10/05/2026)
             binding.tvBlogDate.text = formatDate(blog.createdAt)
 
-            // Xử lý Load Ảnh
             var imageName = blog.image ?: ""
             if (imageName.startsWith("upload/")) imageName = imageName.replaceFirst("upload/", "")
 
@@ -35,7 +33,6 @@ class BlogAdapter(private val onItemClick: (BlogDTO) -> Unit) :
                 .error(R.drawable.logoaquariumshop1)
                 .into(binding.ivBlogThumbnail)
 
-            // Sự kiện click vào bài viết
             binding.root.setOnClickListener {
                 onItemClick(blog)
             }
@@ -54,13 +51,12 @@ class BlogAdapter(private val onItemClick: (BlogDTO) -> Unit) :
     private fun formatDate(dateString: String?): String {
         if (dateString.isNullOrEmpty()) return ""
         try {
-            // Giả sử server trả về chuẩn ISO
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = parser.parse(dateString)
             return if (date != null) formatter.format(date) else dateString
         } catch (e: Exception) {
-            return dateString.substringBefore(" ") // Fix cứng nếu lỗi
+            return dateString.substringBefore(" ")
         }
     }
 }

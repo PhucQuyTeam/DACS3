@@ -31,7 +31,7 @@ class chatFragment : Fragment() {
     private lateinit var viewModel: ChatViewModel
     private lateinit var chatAdapter: ChatAdapter
 
-    private val ADMIN_ID = 42 // ID của chủ shop (bạn có thể truyền từ Bundle sang)
+    private val ADMIN_ID = 42
     private var myUserId = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -50,7 +50,7 @@ class chatFragment : Fragment() {
         val tokenManager = TokenManager(requireContext())
         myUserId = tokenManager.getUserId()
 
-        // Gọi API tải lịch sử và mở WebSocket
+
         viewModel.loadHistory(ADMIN_ID)
         viewModel.startRealtimeChat(myUserId, ADMIN_ID)
 
@@ -58,18 +58,16 @@ class chatFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        // Khởi tạo TokenManager
+
         val tokenManager = TokenManager(requireContext())
         val apiService = RetrofitClient.getInstance(requireContext())
 
-        // Truyền tokenManager vào Repository thay vì truyền String
         val repository = ChatRepository(apiService, tokenManager)
 
         viewModel = ViewModelProvider(this, ChatViewModelFactory(repository))[ChatViewModel::class.java]
     }
 
     private fun setupRecyclerView() {
-        // Truyền ADMIN_ID vào Adapter thay vì myUserId
         chatAdapter = ChatAdapter(ADMIN_ID)
         binding.rvChatMessages.apply {
             adapter = chatAdapter
@@ -92,11 +90,8 @@ class chatFragment : Fragment() {
             }
         }
 
-        // Nút hình ảnh và Emoji (Tương lai mở rộng)
         binding.btnAddMedia.setOnClickListener {
-            // Nút hình ảnh (Gửi ảnh)
             binding.btnAddMedia.setOnClickListener {
-                // Bật thư viện ảnh lên (chỉ cho phép chọn ảnh)
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
@@ -138,16 +133,13 @@ class chatFragment : Fragment() {
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
-            // 2. KHI CHỌN ẢNH XONG -> CHUYỂN URI THÀNH FILE ĐỂ UPLOAD
             val contentResolver = requireContext().contentResolver
             val inputStream = contentResolver.openInputStream(uri)
 
-            // Tạo file tạm trong bộ nhớ cache
             val tempFile = File(requireContext().cacheDir, "temp_chat_image.jpg")
             val outputStream = FileOutputStream(tempFile)
             inputStream?.copyTo(outputStream)
 
-            // 3. ĐÓNG GÓI THÀNH MULTIPART VÀ GỬI LÊN VIEWMODEL
             val requestFile = tempFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val body = MultipartBody.Part.createFormData("image", tempFile.name, requestFile)
 

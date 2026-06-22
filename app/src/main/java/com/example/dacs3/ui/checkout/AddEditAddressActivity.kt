@@ -16,11 +16,9 @@ class AddEditAddressActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddEditAddressBinding
     private var addressId: Int = -1
 
-    // Lưu trữ danh sách Tỉnh/Huyện lấy từ API
     private var provinceList: List<ApiService.ProvinceDTO> = emptyList()
     private var wardList: List<ApiService.WardDTO> = emptyList()
 
-    // Lưu trữ ID đang được chọn
     private var selectedProvinceId: Int = -1
     private var selectedWardId: Int = -1
 
@@ -32,7 +30,6 @@ class AddEditAddressActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAddEdit)
         binding.toolbarAddEdit.setNavigationOnClickListener { finish() }
 
-        // Load danh sách Tỉnh ngay khi mở màn hình
         loadProvinces()
 
         val addressData = intent.getSerializableExtra("EXTRA_ADDRESS") as? AddressDTO
@@ -62,20 +59,17 @@ class AddEditAddressActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     provinceList = response.body()!!
 
-                    // Tạo list tên Tỉnh để hiển thị lên Dropdown
                     val provinceNames = provinceList.map { it.name }
                     val adapter = ArrayAdapter(this@AddEditAddressActivity, android.R.layout.simple_dropdown_item_1line, provinceNames)
                     binding.actProvince.setAdapter(adapter)
 
-                    // Bắt sự kiện khi user Click chọn 1 Tỉnh
                     binding.actProvince.setOnItemClickListener { _, _, position, _ ->
                         selectedProvinceId = provinceList[position].id
-                        binding.actWard.setText("") // Clear xã cũ
+                        binding.actWard.setText("")
                         selectedWardId = -1
-                        loadWards(selectedProvinceId) // Load lại danh sách xã theo tỉnh mới
+                        loadWards(selectedProvinceId)
                     }
 
-                    // Nếu đang ở chế độ Sửa -> Tự động điền tên Tỉnh cũ vào Dropdown
                     if (selectedProvinceId != -1) {
                         val oldProvince = provinceList.find { it.id == selectedProvinceId }
                         if (oldProvince != null) {
@@ -85,7 +79,7 @@ class AddEditAddressActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                // Xử lý lỗi mạng
+
             }
         }
     }
@@ -105,7 +99,6 @@ class AddEditAddressActivity : AppCompatActivity() {
                         selectedWardId = wardList[position].id
                     }
 
-                    // Nếu đang ở chế độ Sửa -> Tự động điền tên Xã cũ vào Dropdown
                     if (selectedWardId != -1) {
                         val oldWard = wardList.find { it.id == selectedWardId }
                         if (oldWard != null) {
@@ -114,7 +107,6 @@ class AddEditAddressActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                // Lỗi
             }
         }
     }
@@ -141,7 +133,6 @@ class AddEditAddressActivity : AppCompatActivity() {
                 val api = RetrofitClient.getInstance(this@AddEditAddressActivity)
 
                 val body = HashMap<String, Any>()
-                // Thêm Tên và SĐT (Sếp nhớ cập nhật API SpringBoot để nhận 2 trường này nếu cần nhé)
                 body["receiverName"] = name
                 body["receiverPhone"] = phone
                 body["provinceId"] = selectedProvinceId

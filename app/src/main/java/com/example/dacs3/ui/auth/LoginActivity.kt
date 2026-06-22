@@ -26,16 +26,12 @@ class LoginActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         tokenManager.clearTokens()
 
-        // Chuyển sang màn đăng ký
         binding.txtGoToRegister.setOnClickListener {
 
-            // 1. Tạo ra một "chuyến xe" (Intent) đi từ màn hình hiện tại (this) đến màn hình RegisterActivity
             val intent = Intent(this, RegisterActivity::class.java)
 
-            // 2. Lệnh cho chuyến xe khởi hành
             startActivity(intent)
         }
-        // Bấm nút đăng nhập
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
@@ -90,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             println("LỖI: Server trả về thành công nhưng Token bị rỗng!")
                         }
-                        // -------------------------------
+
 
                         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
