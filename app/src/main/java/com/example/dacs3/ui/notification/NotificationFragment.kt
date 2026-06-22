@@ -31,7 +31,6 @@ class NotificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Trở về như cũ, cực kỳ đơn giản
         adapter = NotificationAdapter(emptyList())
         rvNotifications.layoutManager = LinearLayoutManager(requireContext())
         rvNotifications.adapter = adapter

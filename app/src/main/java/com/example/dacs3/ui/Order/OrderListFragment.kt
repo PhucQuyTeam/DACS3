@@ -55,7 +55,6 @@ class OrderListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // Chú ý: Đổi getMyOrders thành tên hàm trong ApiService của bạn
                 val response = RetrofitClient.getInstance(requireContext()).getMyOrders(tabStatus)
 
                 if (response.isSuccessful && response.body() != null) {

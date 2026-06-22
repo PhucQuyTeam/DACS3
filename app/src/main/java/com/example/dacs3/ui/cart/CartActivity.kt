@@ -68,7 +68,6 @@ class CartActivity : AppCompatActivity() {
                         onDeleteClick = { itemToDelete, position ->
                             deleteCartItem(itemToDelete, position)
                         },
-                        // BỔ SUNG: Bắt sự kiện cộng/trừ để gọi API cập nhật DB
                         onQuantityChanged = { updatedItem ->
                             updateCartQuantityAPI(updatedItem.cartId, updatedItem.quantity)
                         }

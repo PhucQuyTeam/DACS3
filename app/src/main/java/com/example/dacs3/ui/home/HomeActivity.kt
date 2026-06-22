@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.example.dacs3.R
 import com.example.dacs3.databinding.ActivityHomeBinding
 import com.nafis.bottomnavigation.NafisBottomNavigation
@@ -17,7 +16,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var binding: ActivityHomeBinding
     lateinit var navController: NavController
     lateinit var navHostFragment: NavHostFragment
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +30,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         navHostFragment = supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
-
         navController = navHostFragment.navController
 
-//        binding.bottomNavigationView.setupWithNavController(navController)
-
-        // 2. CẤU HÌNH THANH ĐIỀU HƯỚNG NAFIS
+        // ==========================================
+        // CẤU HÌNH THANH ĐIỀU HƯỚNG NAFIS
         // ==========================================
         val bottomNav = binding.bottomNavigation
 
         // Thêm các nút bấm (Tab) vào thanh bottom
-        // Số 1, 2, 3, 4 là ID của nút. Kế bên là Icon svg tương ứng của bạn.
         bottomNav.add(NafisBottomNavigation.Model(1, R.drawable.ic_home))
         bottomNav.add(NafisBottomNavigation.Model(2, R.drawable.ic_blog))
         bottomNav.add(NafisBottomNavigation.Model(3, R.drawable.ic_notifications))
@@ -61,22 +56,29 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // THÊM ĐOẠN NÀY ĐỂ TỐI ƯU ẨN/HIỆN BOTTOM NAV
+        // TỐI ƯU ẨN/HIỆN BOTTOM NAV
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            // Kiểm tra: Nếu đích đến là trang Chi tiết sản phẩm (hoặc các trang con khác) -> Ẩn Nav đi
-            // Lưu ý: R.id.productDetailFragment là ID của fragment chi tiết khai báo trong file nav_thuysinh.xml
             if (destination.id == R.id.productDetailFragment) {
                 binding.bottomNavigation.visibility = View.GONE
             } else {
-                // Nếu ở màn Home, Profile, Blog... -> Hiện Nav lên
                 binding.bottomNavigation.visibility = View.VISIBLE
             }
         }
 
-        // (Tùy chọn) Chặn sự kiện click đúp: Nếu đang ở tab Home mà bấm Home thêm lần nữa thì không làm gì cả
+        // Chặn sự kiện click đúp
         bottomNav.setOnReselectListener {
             // Để trống để tránh app load lại trang hiện tại
         }
-    }
 
+        // ==========================================
+        // ĐÓN MẬT LỆNH TỪ ORDER HISTORY TRẢ VỀ
+        // ==========================================
+        val targetFragment = intent.getStringExtra("OPEN_FRAGMENT")
+        if (targetFragment == "PROFILE") {
+            // Vì dùng thư viện Nafis, Tab Profile của sếp đang mang ID số 4
+            bottomNav.show(4)
+            // Gọi lệnh ép NavController mở luôn màn hình Profile
+            navController.navigate(R.id.nav_profile)
+        }
+    }
 }

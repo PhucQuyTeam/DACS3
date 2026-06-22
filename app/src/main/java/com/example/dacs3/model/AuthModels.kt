@@ -1,7 +1,6 @@
 package com.example.dacs3.model
 import com.google.gson.annotations.SerializedName
 
-// Request gửi đi
 data class LoginRequest(
     val email: String,
     val password: String

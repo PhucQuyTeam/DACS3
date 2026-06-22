@@ -15,7 +15,6 @@ class CheckoutItemAdapter(private val items: List<CartItemDTO>) :
     RecyclerView.Adapter<CheckoutItemAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        // ID ở đây đã được sửa khớp 100% với file XML của sếp
         val imgProduct: ImageView = view.findViewById(R.id.imgCheckoutProduct)
         val tvName: TextView = view.findViewById(R.id.tvCheckoutProductName)
         val tvPrice: TextView = view.findViewById(R.id.tvCheckoutPrice)
@@ -38,13 +37,13 @@ class CheckoutItemAdapter(private val items: List<CartItemDTO>) :
         holder.tvQuantity.text = "x${item.quantity}"
 
         // Load ảnh bằng Glide
-        // (Sếp nhớ check lại xem trong CartItemDTO biến ảnh tên là 'image' hay 'productImage' nhé)
+
         val imageUrl = "http://10.0.2.2:8081/upload/${item.productImage}"
 
         Glide.with(holder.itemView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.logoaquariumshop1) // Ảnh lúc đang tải
-            .error(R.drawable.logoaquariumshop1)       // Ảnh lúc bị lỗi link
+            .placeholder(R.drawable.logoaquariumshop1)
+            .error(R.drawable.logoaquariumshop1)
             .into(holder.imgProduct)
     }
 

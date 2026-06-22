@@ -26,16 +26,14 @@ class LoginActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         tokenManager.clearTokens()
 
-        // Chuyển sang màn đăng ký
+        // chuyển sang màn đăng ký
         binding.txtGoToRegister.setOnClickListener {
 
-            // 1. Tạo ra một "chuyến xe" (Intent) đi từ màn hình hiện tại (this) đến màn hình RegisterActivity
             val intent = Intent(this, RegisterActivity::class.java)
 
-            // 2. Lệnh cho chuyến xe khởi hành
             startActivity(intent)
         }
-        // Bấm nút đăng nhập
+        // bấm nút đăng nhập
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
@@ -72,16 +70,15 @@ class LoginActivity : AppCompatActivity() {
                     if (authResponse.success) {
                         Toast.makeText(this@LoginActivity, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
 
-                        // --- ĐOẠN CODE LƯU TOKEN MỚI ---
+                        // lưu token mới
                         val token = authResponse.token
                         val refToken = authResponse.refreshToken
 
                         if (!token.isNullOrEmpty()) {
-                            // In ra Logcat để xác nhận là token đã về tới Android
+                            // in ra Logcat để xác nhận là token đã về tới Android
                             println("Token lấy được: $token")
                             tokenManager.saveTokens(token, refToken ?: "")
 
-                            // BỔ SUNG: LẤY VÀ LƯU USER ID TỪ ĐÂY
                             val userId = authResponse.user?.id
                             if (userId != null) {
                                 tokenManager.saveUserId(userId)
@@ -90,8 +87,6 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             println("LỖI: Server trả về thành công nhưng Token bị rỗng!")
                         }
-                        // -------------------------------
-
                         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()

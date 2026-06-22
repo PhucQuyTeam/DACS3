@@ -36,10 +36,6 @@ class SplashActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
 
-        // =========================================================
-        // 1. HIỆU ỨNG GIAO DIỆN KIỂU DUOLINGO
-        // =========================================================
-
         // Hiệu ứng nảy (Bounce) cho cụm Logo
         binding.llMascot.scaleX = 0f
         binding.llMascot.scaleY = 0f
@@ -78,12 +74,8 @@ class SplashActivity : AppCompatActivity() {
         }
         animator.start()
 
-
-        // =========================================================
-        // 2. CHẠY NGẦM XỬ LÝ TOKEN VÀ ĐIỀU HƯỚNG
-        // =========================================================
+      // chạy ngầm token điều hướng đến home
         lifecycleScope.launch(Dispatchers.IO) {
-            // Tăng thời gian đợi lên 3 giây để khách xem hết hiệu ứng UI
             delay(4000)
             checkAndNavigate()
         }
@@ -98,19 +90,19 @@ class SplashActivity : AppCompatActivity() {
             return
         }
 
-        // KIỂM TRA HẠN SỬ DỤNG VÉ
+        // kiểm tra token
         if (isTokenExpiringSoon(accessToken)) {
-            Log.d("Splash", "Vé cũ đã hết hạn! Xin vé mới ngay tại cổng...")
+            Log.d("Splash", "Tokenn đã hết...")
             val isRefreshSuccess = refreshAccessTokenSync(refreshToken)
             if (isRefreshSuccess) {
                 goToHome()
             } else {
-                Log.e("Splash", "Vé chết, Thẻ VIP cũng chết -> Yêu cầu Đăng nhập lại.")
+                Log.e("Splash", "Refresh token đã hết  -> Yêu cầu Đăng nhập lại.")
                 tokenManager.clearTokens()
                 goToLogin()
             }
         } else {
-            Log.d("Splash", "Vé còn sống nguyên! Xin mời vào...")
+            Log.d("Splash", "Token còn hiệu lực! Xin mời vào...")
             goToHome()
         }
     }

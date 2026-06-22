@@ -23,9 +23,8 @@ class RegisterActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         tokenManager.clearTokens()
 
-        // Quay lại đăng nhập
         binding.txtGoToLogin.setOnClickListener {
-            finish() // Tắt màn đăng ký, tự lùi về màn đăng nhập
+            finish() //
         }
 
         binding.btnRegister.setOnClickListener {
@@ -69,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
 
                     if (authResponse.success) {
                         Toast.makeText(this@RegisterActivity, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_LONG).show()
-                        finish() // Về màn hình đăng nhập
+                        finish()
                     } else {
                         Toast.makeText(this@RegisterActivity, authResponse.message, Toast.LENGTH_SHORT).show()
                     }

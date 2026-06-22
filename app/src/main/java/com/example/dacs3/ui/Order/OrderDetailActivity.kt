@@ -27,7 +27,6 @@ class OrderDetailActivity : AppCompatActivity() {
     private var previewCard: View? = null
     private var previewImageView: ImageView? = null
 
-    // 1. Bộ chọn ảnh từ thư viện
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             selectedImageUri = it
@@ -41,11 +40,9 @@ class OrderDetailActivity : AppCompatActivity() {
         binding = ActivityOrderDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 2. Setup Toolbar & Back
         setSupportActionBar(binding.toolbarOrderDetail)
         binding.toolbarOrderDetail.setNavigationOnClickListener { finish() }
 
-        // 3. Nhận dữ liệu từ màn hình Lịch sử đơn hàng
         val orderId = intent.getIntExtra("ORDER_ID", 0)
         val orderTotal = intent.getDoubleExtra("ORDER_TOTAL", 0.0)
         val orderAddress = intent.getStringExtra("ORDER_ADDRESS") ?: "Chưa rõ địa chỉ"
@@ -53,7 +50,6 @@ class OrderDetailActivity : AppCompatActivity() {
         val paymentStatus = intent.getStringExtra("ORDER_PAYMENT_STATUS")
         val deliveryStatus = intent.getStringExtra("ORDER_DELIVERY_STATUS") ?: "pending"
 
-        // 4. Đổ dữ liệu lên giao diện
         binding.tvDetailOrderId.text = "Mã đơn: #$orderId"
         binding.tvDetailDate.text = "Ngày đặt: $orderDate"
         binding.tvDetailAddress.text = orderAddress
@@ -67,10 +63,8 @@ class OrderDetailActivity : AppCompatActivity() {
             binding.tvDetailPaymentStatus.setTextColor(android.graphics.Color.parseColor("#FF9800"))
         }
 
-        // 5. Cài đặt RecyclerView
         binding.rvOrderItems.layoutManager = LinearLayoutManager(this)
 
-        // 6. Gọi API lấy danh sách món hàng
         fetchOrderItems(orderId, deliveryStatus)
     }
 
@@ -81,7 +75,6 @@ class OrderDetailActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val itemList = response.body()!!
 
-                    // Khởi tạo Adapter với 3 tham số: List, Trạng thái giao, và Hàm xử lý khi bấm Đánh giá
                     val adapter = OrderDetailAdapter(itemList, deliveryStatus) { productId, position ->
                         showReviewBottomSheet(productId, orderId, position, itemList)
                     }
@@ -108,7 +101,6 @@ class OrderDetailActivity : AppCompatActivity() {
         previewCard = view.findViewById(R.id.cardPreview)
         previewImageView = view.findViewById(R.id.imgReviewPreview)
 
-        // Reset trạng thái ảnh mỗi lần mở
         selectedImageUri = null
         previewCard?.visibility = View.GONE
 
@@ -120,7 +112,6 @@ class OrderDetailActivity : AppCompatActivity() {
             val rating = ratingBar.rating.toInt()
             val comment = edtComment.text.toString().trim()
 
-            // Chuẩn bị dữ liệu Multipart
             val pIdBody = productId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
             val oIdBody = orderId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
             val ratBody = rating.toString().toRequestBody("text/plain".toMediaTypeOrNull())
@@ -147,7 +138,6 @@ class OrderDetailActivity : AppCompatActivity() {
                         Toast.makeText(this@OrderDetailActivity, "Cảm ơn sếp đã đánh giá!", Toast.LENGTH_SHORT).show()
                         bottomSheetDialog.dismiss()
 
-                        // LOCK NÚT LẠI NGAY LẬP TỨC TRÊN GIAO DIỆN
                         itemList[position].isReviewed = true
                         binding.rvOrderItems.adapter?.notifyItemChanged(position)
                     } else {

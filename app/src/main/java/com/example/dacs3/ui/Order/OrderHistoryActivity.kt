@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.dacs3.MainActivity
 import com.example.dacs3.adapter.OrderPagerAdapter
 import com.example.dacs3.databinding.ActivityOrderHistoryBinding
+import com.example.dacs3.ui.home.HomeActivity
+import com.example.dacs3.ui.profile.ProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlin.jvm.java
 
 class OrderHistoryActivity : AppCompatActivity() {
 
@@ -20,6 +23,16 @@ class OrderHistoryActivity : AppCompatActivity() {
         // Setup Nút Back
         setSupportActionBar(binding.toolbarOrderHistory)
         binding.toolbarOrderHistory.setNavigationOnClickListener {
+            // Gọi thẳng về HomeActivity
+            val intent = Intent(this, HomeActivity::class.java) // Đổi HomeActivity thành tên Activity chính chứa Bottom Navigation của sếp nhé
+
+            // Gửi mật lệnh bảo nó mở tab Profile
+            intent.putExtra("OPEN_FRAGMENT", "PROFILE")
+
+            // BÙA HỦY DIỆT: Xóa sạch toàn bộ lịch sử các màn hình trước đó (Checkout, Cart...)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
             finish()
         }
 

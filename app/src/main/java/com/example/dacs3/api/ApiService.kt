@@ -40,10 +40,10 @@ interface ApiService {
 
     @GET("home/products")
     suspend fun getHomeProducts(): Response<List<ProductHomeDTO>>
-    @GET("user/profile") // Thay đổi đường dẫn này theo đúng backend của bạn
+    @GET("user/profile")
     suspend fun getUserProfile(): Response<UserProfileDTO>
 
-    //sử lý api chi tiết sp
+    //xử lý api chi tiết sp
     @GET("home/products/{id}")
     suspend fun getProductDetail(@Path("id") productId: Int): Response<productDetailDTO>
     @GET("home/products/{id}/reviews")
@@ -62,7 +62,6 @@ interface ApiService {
         @Query("status") status: Int
     ): Response<List<OrderDTO>>
 
-    // ĐÃ SỬA: Thêm /api/order vào trước đường dẫn
     @GET("/api/order/order-items")
     suspend fun getOrderItems(
         @Query("orderId") orderId: Int
@@ -102,7 +101,7 @@ interface ApiService {
     @DELETE("/api/user/address/delete/{id}")
     suspend fun deleteAddress(@Path("id") id: Int): retrofit2.Response<okhttp3.ResponseBody>
 
-    @PUT("/cart/update") // Sếp nhớ check lại xem có cần thêm /api/ ở đầu không cho khớp Backend nhé
+    @PUT("/cart/update")
     suspend fun updateCartQuantity(
         @Query("cartId") cartId: Int,
         @Query("quantity") quantity: Int
@@ -145,9 +144,9 @@ interface ApiService {
     suspend fun markChatAsRead(@Query("adminId") adminId: Int): retrofit2.Response<okhttp3.ResponseBody>
 
     @Multipart
-    @POST("/api/chat/upload-image") // Backend cần viết API này
+    @POST("/api/chat/upload-image")
     suspend fun uploadChatImage(@Part image: MultipartBody.Part): Response<BaseResponse>
-    // BaseResponse ở đây mình dùng lại cái cũ của bạn, thông điệp trả về (message) chính là "tên file ảnh".
+
 
     @Multipart
     @POST("/api/reviews/add")

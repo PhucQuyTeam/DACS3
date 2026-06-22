@@ -35,15 +35,13 @@ class AddressSelectionAdapter(
         holder.tvAddress.text = address.fullAddress
 
 
-        // Sự kiện khi bấm vào cả dòng địa chỉ để chọn
         holder.itemView.setOnClickListener {
             addresses.forEach { it.isSelected = false }
             address.isSelected = true
-            notifyDataSetChanged() // Cập nhật lại UI để RadioButton nhảy sang mục mới
-            onAddressSelected(address) // Trả kết quả về Activity
+            notifyDataSetChanged()
+            onAddressSelected(address)
         }
 
-        // Sự kiện khi bấm vào chữ "Sửa"
         holder.tvEdit.setOnClickListener {
             onEditClick(address)
         }

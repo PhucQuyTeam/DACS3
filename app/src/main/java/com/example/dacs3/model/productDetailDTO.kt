@@ -5,9 +5,9 @@ data class productDetailDTO (
     val name: String,
     val price: Int,
     val description: String,
-    val quantity: Int, // Số lượng trong kho
-    val imgages: List<String>?, // Chú ý: Backend bạn viết là 'imgages'
-    val total_ProductQuantity: Int, // Đã bán
+    val quantity: Int,
+    val imgages: List<String>?,
+    val total_ProductQuantity: Int,
     val categorieName: String,
     val averageRating: Double,
     val totalReviews: Int

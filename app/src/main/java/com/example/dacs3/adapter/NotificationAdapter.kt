@@ -22,7 +22,7 @@ class NotificationAdapter(private var notiList: List<NotificationDTO>) :
         val tvTitle: TextView = view.findViewById(R.id.tvNotiTitle)
         val tvMessage: TextView = view.findViewById(R.id.tvNotiMessage)
         val tvDate: TextView = view.findViewById(R.id.tvNotiDate)
-        val viewUnreadIndicator: View = view.findViewById(R.id.viewUnreadIndicator) // Nhớ có dòng này
+        val viewUnreadIndicator: View = view.findViewById(R.id.viewUnreadIndicator)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
